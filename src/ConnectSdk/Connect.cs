@@ -38,7 +38,7 @@ namespace ConnectSdk
             return _connect.Add(collectionName, eventData);
         }
 
-        public static Task<EventBatchPushResponse> PushStored()
+        public static Task<EventBatchPushResponse> PushPending()
         {
             return _connect.PushPending();
         }
