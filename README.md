@@ -1,5 +1,7 @@
 # Connect .Net SDK
 
+[![Join the chat at https://gitter.im/getconnect/connect-net-sdk](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/getconnect/connect-net-sdk?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ## Getting Access
 
 [Get Connect](https://getconnect.io) to sign up and gain access to API keys to start using the SDK.
