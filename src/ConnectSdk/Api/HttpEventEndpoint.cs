@@ -12,6 +12,11 @@ namespace ConnectSdk.Api
     {
         protected readonly IConfiguration Configuration;
 
+        public const string ContentType = "application/json";
+        public const string ApiKeyHeaderKey = "X-Api-Key";
+        public const string ProjectIdHeaderKey = "X-Project-Id";
+
+
         public HttpEventEndpoint(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -22,8 +27,8 @@ namespace ConnectSdk.Api
             using (var client = ConfigureClient())
             {
                 var eventBody = RequestBodyGenerator.GenerateEventBody(eventData);
-                var response = await client.PostAsync("events/" + collectionName, new StringContent(eventBody, Encoding.UTF8, "application/json"))
-                    .ConfigureAwait(continueOnCapturedContext: false);
+                var response = await client.PostAsync("events/" + collectionName, new StringContent(eventBody, Encoding.UTF8, ContentType))
+                    .ConfigureAwait(false);
                 var responseText = await response.Content.ReadAsStringAsync();
                 return ResponseParser.ParseEventResponse(response.StatusCode, responseText, eventData);
             }
@@ -39,8 +44,8 @@ namespace ConnectSdk.Api
             using (var client = ConfigureClient())
             {
                 var batch = RequestBodyGenerator.GenerateBatchBody(eventDataByCollection);
-                var response = await client.PostAsync("events", new StringContent(batch, Encoding.UTF8, "application/json"))
-                    .ConfigureAwait(continueOnCapturedContext: false);
+                var response = await client.PostAsync("events", new StringContent(batch, Encoding.UTF8, ContentType))
+                    .ConfigureAwait(false);
                 var responseText = await response.Content.ReadAsStringAsync();
 
                 var eventBatchPushResponse = ResponseParser.ParseEventResponseBatch(response.StatusCode, responseText, eventDataByCollection);
@@ -50,11 +55,17 @@ namespace ConnectSdk.Api
 
         protected virtual HttpClient ConfigureClient()
         {
-            var client = new HttpClient {BaseAddress = new Uri(Configuration.BaseUrl)};
+            var client = CreateClient();
             client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Add("X-API-Key", Configuration.WriteKey);
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ContentType));
+            client.DefaultRequestHeaders.Add(ApiKeyHeaderKey, Configuration.WriteKey);
+            client.DefaultRequestHeaders.Add(ProjectIdHeaderKey, Configuration.ProjectId);
             return client;
+        }
+
+        protected virtual HttpClient CreateClient()
+        {
+            return new HttpClient {BaseAddress = new Uri(Configuration.BaseUrl)};
         }
     }
 }

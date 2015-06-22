@@ -13,14 +13,13 @@ namespace ConnectSdk
         protected readonly IEventEndpoint HttpEventEndpoint;
 
         public ConnectClient(IConfiguration configuration, IEventStore eventStore = null)
+            : this(configuration, new HttpEventEndpoint(configuration), eventStore)
         {
-            EventStore = eventStore ?? new FileEventStore();
-            HttpEventEndpoint = new HttpEventEndpoint(configuration);
         }
 
-        public ConnectClient(IEventEndpoint eventEndpoint, IEventStore eventStore = null)
+        public ConnectClient(IConfiguration configuration, IEventEndpoint eventEndpoint, IEventStore eventStore = null)
         {
-            EventStore = eventStore ?? new FileEventStore();
+            EventStore = eventStore ?? new FileEventStore(configuration.ProjectId);
             HttpEventEndpoint = eventEndpoint;
         }
 

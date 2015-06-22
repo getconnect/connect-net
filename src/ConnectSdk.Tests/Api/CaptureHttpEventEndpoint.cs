@@ -15,12 +15,9 @@ namespace ConnectSdk.Tests.Api
             _captureHttpHandler = captureHttpHandler;
         }
 
-        protected override HttpClient ConfigureClient()
+        protected override HttpClient CreateClient()
         {
             var client = new HttpClient(_captureHttpHandler) { BaseAddress = new Uri(Configuration.BaseUrl) };
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Add("X-Api-Key", Configuration.WriteKey);
             return client;
         }
     }
