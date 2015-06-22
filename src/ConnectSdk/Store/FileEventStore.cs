@@ -8,11 +8,13 @@ namespace ConnectSdk.Store
 {
     public class FileEventStore : IEventStore
     {
+        private readonly string _projectId;
         private readonly string _rootFolderName;
         private static readonly AsyncLock Mutex = new AsyncLock();
 
-        public FileEventStore(string rootFolderName = ".tp-events")
+        public FileEventStore(string projectId, string rootFolderName = ".tp-events")
         {
+            _projectId = projectId;
             _rootFolderName = rootFolderName;
         }
 
@@ -74,7 +76,8 @@ namespace ConnectSdk.Store
         private async Task<IFolder> GetRootFolder()
         {
             var rootFolder = FileSystem.Current.LocalStorage;
-            return await rootFolder.CreateFolderAsync(_rootFolderName, CreationCollisionOption.OpenIfExists);
+            var connectFolder = await rootFolder.CreateFolderAsync(_rootFolderName, CreationCollisionOption.OpenIfExists);
+            return await connectFolder.CreateFolderAsync(_projectId, CreationCollisionOption.OpenIfExists);
         }
 
         private async Task<IEnumerable<Event>> GetEvents(IFolder collectionFolder)

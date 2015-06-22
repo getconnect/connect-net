@@ -95,6 +95,7 @@
   <ItemGroup>
     <Compile Include="Api\CaptureHttpEventEndpoint.cs" />
     <Compile Include="Api\CaptureHttpHandler.cs" />
+    <Compile Include="Api\TestConfigurator.cs" />
     <Compile Include="ConnectClientStoreTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ConnectClientPushTests.cs" />

@@ -1,7 +1,6 @@
-﻿using System.Linq;
+﻿﻿using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using ConnectSdk.Config;
 using ConnectSdk.Tests.Api;
 using Xunit;
 
@@ -17,8 +16,7 @@ namespace ConnectSdk.Tests
             public WhenPushingSingleSuccessfullEvent()
             {
                 _testHandler = new CaptureHttpHandler();
-                var captureHttpEventStore = new CaptureHttpEventEndpoint(new BasicConfiguration(string.Empty), _testHandler);
-                _connect = new ConnectClient(captureHttpEventStore);
+                _connect = TestConfigurator.GetTestableClient(_testHandler);
             }
 
             [Fact]
@@ -65,6 +63,24 @@ namespace ConnectSdk.Tests
 
                 Assert.Equal(EventPushResponseStatus.Successfull, result.Status);
             }
+
+            [Fact]
+            public async Task It_should_set_the_api_key()
+            {
+
+                var result = await _connect.Push("test", new { Hello = "World" });
+
+                Assert.Equal(TestConfigurator.ApiKey, _testHandler.Headers["X-Api-Key"]);
+            }
+
+            [Fact]
+            public async Task It_should_set_the_project_id()
+            {
+
+                var result = await _connect.Push("test", new { Hello = "World" });
+
+                Assert.Equal(TestConfigurator.ProjectId, _testHandler.Headers["X-Project-Id"]);
+            }
             
         }
 
@@ -77,8 +93,7 @@ namespace ConnectSdk.Tests
             {
                 var responseText = @"{""errorMessage"": ""Error""}";
                 _testHandler = new CaptureHttpHandler(responseText, HttpStatusCode.Conflict);
-                var captureHttpEventStore = new CaptureHttpEventEndpoint(new BasicConfiguration(string.Empty), _testHandler);
-                _connect = new ConnectClient(captureHttpEventStore);
+                _connect = TestConfigurator.GetTestableClient(_testHandler);
             }
 
             [Fact]
@@ -118,8 +133,7 @@ namespace ConnectSdk.Tests
             {
                 var responseText = @"{""errors"": [ { ""field"":""Hello"", ""description"":""Invalid Greeting"" } ]}";
                 _testHandler = new CaptureHttpHandler(responseText, (HttpStatusCode)422);
-                var captureHttpEventStore = new CaptureHttpEventEndpoint(new BasicConfiguration(string.Empty), _testHandler);
-                _connect = new ConnectClient(captureHttpEventStore);
+                _connect = TestConfigurator.GetTestableClient(_testHandler);
             }
 
             [Fact]
@@ -158,8 +172,7 @@ namespace ConnectSdk.Tests
             public WhenPushingAnEventWithReservedProperties()
             {
                 _testHandler = new CaptureHttpHandler();
-                var captureHttpEventStore = new CaptureHttpEventEndpoint(new BasicConfiguration(string.Empty), _testHandler);
-                _connect = new ConnectClient(captureHttpEventStore);
+                _connect = TestConfigurator.GetTestableClient(_testHandler);
             }
 
             [Fact]
@@ -178,8 +191,7 @@ namespace ConnectSdk.Tests
             public WhenPushingSuccessfullBatchEvent()
             {
                 _testHandler = new CaptureHttpHandler(@"{""test"": [ {""success"": true }]}");
-                var captureHttpEventStore = new CaptureHttpEventEndpoint(new BasicConfiguration(string.Empty), _testHandler);
-                _connect = new ConnectClient(captureHttpEventStore);
+                _connect = TestConfigurator.GetTestableClient(_testHandler);
             }
 
             [Fact]
@@ -256,8 +268,7 @@ namespace ConnectSdk.Tests
             public WhenPushingBatchEventWithDuplicates()
             {
                 _testHandler = new CaptureHttpHandler(@"{""test"": [ {""success"": false, ""duplicate"": true, ""message"": ""Error"" }]}");
-                var captureHttpEventStore = new CaptureHttpEventEndpoint(new BasicConfiguration(string.Empty), _testHandler);
-                _connect = new ConnectClient(captureHttpEventStore);
+                _connect = TestConfigurator.GetTestableClient(_testHandler);
             }
 
             [Fact]
@@ -313,8 +324,7 @@ namespace ConnectSdk.Tests
             public WhenPushingBatchEventWithError()
             {
                 _testHandler = new CaptureHttpHandler(@"{""test"": [ {""success"": false, ""message"": ""Error"" }]}");
-                var captureHttpEventStore = new CaptureHttpEventEndpoint(new BasicConfiguration(string.Empty), _testHandler);
-                _connect = new ConnectClient(captureHttpEventStore);
+                _connect = TestConfigurator.GetTestableClient(_testHandler);
             }
 
             [Fact]
