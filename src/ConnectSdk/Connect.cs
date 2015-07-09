@@ -8,12 +8,12 @@ namespace ConnectSdk
     {
         private static IConnect _connect;
 
-        public static void Inititialize(IConfiguration configuration)
+        public static void Initialize(IConfiguration configuration)
         {
             _connect = new ConnectClient(configuration);
         }
 
-        public static void Inititialize(IConnect connect)
+        public static void Initialize(IConnect connect)
         {
             _connect = connect;
         }
