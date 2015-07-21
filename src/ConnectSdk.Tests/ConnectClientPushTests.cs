@@ -1,4 +1,5 @@
-﻿﻿using System.Linq;
+﻿﻿using System;
+﻿using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using ConnectSdk.Tests.Api;
@@ -25,7 +26,7 @@ namespace ConnectSdk.Tests
 
                 var result = await _connect.Push("test", new { Hello = "World" });
 
-                Assert.Equal("World", _testHandler.RequestBody["Hello"]);
+                Assert.Equal("World", _testHandler.ParsedRequestBody["Hello"]);
             }
 
             [Fact]
@@ -34,7 +35,7 @@ namespace ConnectSdk.Tests
 
                 var result = await _connect.Push("test", new { Hello = "World" });
 
-                Assert.NotNull(_testHandler.RequestBody["id"]);
+                Assert.NotNull(_testHandler.ParsedRequestBody["id"]);
             }
 
             [Fact]
@@ -43,7 +44,38 @@ namespace ConnectSdk.Tests
 
                 var result = await _connect.Push("test", new { Hello = "World" });
 
-                Assert.NotNull(_testHandler.RequestBody["timestamp"]);
+                Assert.NotNull(_testHandler.ParsedRequestBody["timestamp"]);
+            }
+
+            [Fact]
+            public async Task It_should_serialize_local_dates_in_iso_utc_format()
+            {
+                var utcDateTime = new DateTime(2015, 07, 17, 11, 11, 11, DateTimeKind.Utc);
+                var localTime = utcDateTime.ToLocalTime();
+
+                var result = await _connect.Push("test", new { SomeDate = localTime });
+                
+                Assert.Contains("\"SomeDate\": \"2015-07-17T11:11:11Z\"", _testHandler.RequestBody);
+            }
+
+            [Fact]
+            public async Task It_should_serialize_utc_dates_in_iso_utc_format()
+            {
+                var utcDateTime = new DateTime(2015, 07, 17, 11, 11, 11, DateTimeKind.Utc);
+
+                var result = await _connect.Push("test", new { SomeDate = utcDateTime });
+
+                Assert.Contains("\"SomeDate\": \"2015-07-17T11:11:11Z\"", _testHandler.RequestBody);
+            }
+
+            [Fact]
+            public async Task It_should_serialize_unspecified_dates_in_iso_utc_format()
+            {
+                var unspecifiedDateTime = new DateTime(2015, 07, 17, 11, 11, 11, DateTimeKind.Unspecified);
+
+                var result = await _connect.Push("test", new { SomeDate = unspecifiedDateTime });
+                
+                Assert.Contains("\"SomeDate\": \"2015-07-17T11:11:11Z\"", _testHandler.RequestBody);
             }
 
             [Fact]
@@ -199,7 +231,7 @@ namespace ConnectSdk.Tests
             {
                 var result = await _connect.Push("test", new[] { new { Hello = "World" } });
 
-                var firstTestResponse = _testHandler.RequestBody["test"][0];
+                var firstTestResponse = _testHandler.ParsedRequestBody["test"][0];
 
                 Assert.Equal("World", firstTestResponse["Hello"]);
             }
@@ -210,7 +242,7 @@ namespace ConnectSdk.Tests
 
                 var result = await _connect.Push("test", new[] { new { Hello = "World" } });
 
-                var firstTestResponse = _testHandler.RequestBody["test"][0];
+                var firstTestResponse = _testHandler.ParsedRequestBody["test"][0];
 
                 Assert.NotNull(firstTestResponse["id"]);
             }
@@ -221,7 +253,7 @@ namespace ConnectSdk.Tests
 
                 var result = await _connect.Push("test", new[] { new { Hello = "World" } });
 
-                var firstTestResponse = _testHandler.RequestBody["test"][0];
+                var firstTestResponse = _testHandler.ParsedRequestBody["test"][0];
 
                 Assert.NotNull(firstTestResponse["id"]);
             }
@@ -232,7 +264,7 @@ namespace ConnectSdk.Tests
 
                 var result = await _connect.Push("test", new[] { new { Hello = "World" } });
 
-                var firstTestResponse = _testHandler.RequestBody["test"][0];
+                var firstTestResponse = _testHandler.ParsedRequestBody["test"][0];
 
                 Assert.Equal(HttpStatusCode.OK, result.HttpStatusCode);
             }
@@ -243,7 +275,7 @@ namespace ConnectSdk.Tests
 
                 var result = await _connect.Push("test", new[] { new { Hello = "World" } });
 
-                var firstTestResponse = _testHandler.RequestBody["test"][0];
+                var firstTestResponse = _testHandler.ParsedRequestBody["test"][0];
 
                 Assert.Equal(EventPushResponseStatus.Successfull, result.Status);
             }
@@ -254,9 +286,20 @@ namespace ConnectSdk.Tests
 
                 var result = await _connect.Push("test", new[] { new { Hello = "World" } });
 
-                var firstTestResponse = _testHandler.RequestBody["test"][0];
+                var firstTestResponse = _testHandler.ParsedRequestBody["test"][0];
 
                 Assert.Equal(EventPushResponseStatus.Successfull, result.ResponsesByCollection["test"][0].Status);
+            }
+
+            [Fact]
+            public async Task It_should_serialize_local_dates_in_iso_utc_format()
+            {
+                var utcDateTime = new DateTime(2015, 07, 17, 11, 11, 11, DateTimeKind.Utc);
+                var localTime = utcDateTime.ToLocalTime();
+
+                var result = await _connect.Push("test", new[] { new { SomeDate = localTime } });
+
+                Assert.Contains("\"SomeDate\": \"2015-07-17T11:11:11Z\"", _testHandler.RequestBody);
             }
         }
 
@@ -277,7 +320,7 @@ namespace ConnectSdk.Tests
 
                 var result = await _connect.Push("test", new[] { new { Hello = "World" } });
 
-                var firstTestResponse = _testHandler.RequestBody["test"][0];
+                var firstTestResponse = _testHandler.ParsedRequestBody["test"][0];
 
                 Assert.Equal(HttpStatusCode.OK, result.HttpStatusCode);
             }
@@ -288,7 +331,7 @@ namespace ConnectSdk.Tests
 
                 var result = await _connect.Push("test", new[] { new { Hello = "World" } });
 
-                var firstTestResponse = _testHandler.RequestBody["test"][0];
+                var firstTestResponse = _testHandler.ParsedRequestBody["test"][0];
 
                 Assert.Equal(EventPushResponseStatus.Successfull, result.Status);
             }
@@ -299,7 +342,7 @@ namespace ConnectSdk.Tests
 
                 var result = await _connect.Push("test", new[] { new { Hello = "World" } });
 
-                var firstTestResponse = _testHandler.RequestBody["test"][0];
+                var firstTestResponse = _testHandler.ParsedRequestBody["test"][0];
 
                 Assert.Equal(EventPushResponseStatus.Duplicate, result.ResponsesByCollection["test"][0].Status);
             }
@@ -310,7 +353,7 @@ namespace ConnectSdk.Tests
 
                 var result = await _connect.Push("test", new[] { new { Hello = "World" } });
 
-                var firstTestResponse = _testHandler.RequestBody["test"][0];
+                var firstTestResponse = _testHandler.ParsedRequestBody["test"][0];
 
                 Assert.Equal("Error", result.ResponsesByCollection["test"][0].ErrorMessage);
             }
@@ -333,7 +376,7 @@ namespace ConnectSdk.Tests
 
                 var result = await _connect.Push("test", new[] { new { Hello = "World" } });
 
-                var firstTestResponse = _testHandler.RequestBody["test"][0];
+                var firstTestResponse = _testHandler.ParsedRequestBody["test"][0];
 
                 Assert.Equal(HttpStatusCode.OK, result.HttpStatusCode);
             }
@@ -344,7 +387,7 @@ namespace ConnectSdk.Tests
 
                 var result = await _connect.Push("test", new[] { new { Hello = "World" } });
 
-                var firstTestResponse = _testHandler.RequestBody["test"][0];
+                var firstTestResponse = _testHandler.ParsedRequestBody["test"][0];
 
                 Assert.Equal(EventPushResponseStatus.Successfull, result.Status);
             }
@@ -355,7 +398,7 @@ namespace ConnectSdk.Tests
 
                 var result = await _connect.Push("test", new[] { new { Hello = "World" } });
 
-                var firstTestResponse = _testHandler.RequestBody["test"][0];
+                var firstTestResponse = _testHandler.ParsedRequestBody["test"][0];
 
                 Assert.Equal(EventPushResponseStatus.GeneralError, result.ResponsesByCollection["test"][0].Status);
             }
@@ -366,7 +409,7 @@ namespace ConnectSdk.Tests
 
                 var result = await _connect.Push("test", new[] { new { Hello = "World" } });
 
-                var firstTestResponse = _testHandler.RequestBody["test"][0];
+                var firstTestResponse = _testHandler.ParsedRequestBody["test"][0];
 
                 Assert.Equal("Error", result.ResponsesByCollection["test"][0].ErrorMessage);
             }
