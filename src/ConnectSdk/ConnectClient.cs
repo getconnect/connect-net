@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ConnectSdk.Api;
 using ConnectSdk.Config;
 using ConnectSdk.Store;
+using Newtonsoft.Json;
 
 namespace ConnectSdk
 {
@@ -11,6 +12,7 @@ namespace ConnectSdk
     {
         protected readonly IEventStore EventStore;
         protected readonly IEventEndpoint HttpEventEndpoint;
+        protected readonly JsonSerializer Serializer;
 
         public ConnectClient(IConfiguration configuration, IEventStore eventStore = null)
             : this(configuration, new HttpEventEndpoint(configuration), eventStore)
@@ -21,26 +23,27 @@ namespace ConnectSdk
         {
             EventStore = eventStore ?? new FileEventStore(configuration.ProjectId);
             HttpEventEndpoint = eventEndpoint;
+            Serializer = configuration.Serializer;
         }
 
         public virtual async Task<EventPushResponse> Push(string collectionName, object eventData)
         {
-            return await HttpEventEndpoint.Push(collectionName, new Event(eventData));
+            return await HttpEventEndpoint.Push(collectionName, new Event(eventData, Serializer));
         }
 
         public virtual async Task<EventBatchPushResponse> Push(string collectionName, IEnumerable<object> eventData)
         {
-            return await HttpEventEndpoint.Push(collectionName, eventData.Select(ed => new Event(ed)));
+            return await HttpEventEndpoint.Push(collectionName, eventData.Select(ed => new Event(ed, Serializer)));
         }
 
         public virtual async Task Add(string collectionName, object eventData)
         {
-            await EventStore.Add(collectionName, new Event(eventData));
+            await EventStore.Add(collectionName, new Event(eventData, Serializer));
         }
 
         public virtual async Task Add(string collectionName, IEnumerable<object> eventData)
         {
-            await TaskEx.WhenAll(eventData.Select(ed => EventStore.Add(collectionName, new Event(ed))));
+            await TaskEx.WhenAll(eventData.Select(ed => EventStore.Add(collectionName, new Event(ed, Serializer))));
         }
 
         public virtual async Task<EventBatchPushResponse> PushPending()

@@ -39,6 +39,38 @@ namespace ConnectSdk.Tests
                 
             }
 
+            [Fact]
+            public async Task It_should_serialize_id_to_file()
+            {
+                var id = Guid.NewGuid();
+                var localStorageRoot = FileSystem.Current.LocalStorage;
+
+                await _connect.Add(Collection, new { id });
+
+                var filePathForEvent = TestConfigurator.GetFilePathForEvent(_rootFolderName, Collection, id);
+                var file = await localStorageRoot.GetFileAsync(filePathForEvent);
+                var contents = await file.ReadAllTextAsync();
+                Assert.Contains(string.Format("\"id\": \"{0}\"", id), contents);
+
+            }
+
+            [Fact]
+            public async Task It_should_serialize_local_dates_in_iso_utc_format()
+            {
+                var id = Guid.NewGuid();
+                var utcDateTime = new DateTime(2015, 07, 17, 11, 11, 11, DateTimeKind.Utc);
+                var localTime = utcDateTime.ToLocalTime();
+                var localStorageRoot = FileSystem.Current.LocalStorage;
+
+                await _connect.Add(Collection, new { id, SomeDate = localTime });
+
+                var filePathForEvent = TestConfigurator.GetFilePathForEvent(_rootFolderName, Collection, id);
+                var file = await localStorageRoot.GetFileAsync(filePathForEvent);
+                var contents = await file.ReadAllTextAsync();
+
+                Assert.Contains("\"SomeDate\": \"2015-07-17T11:11:11Z\"", contents);
+            }
+
             public async void Dispose()
             {
                 var rootFolder = await FileSystem.Current.LocalStorage.GetFolderAsync(_rootFolderName);
@@ -71,7 +103,39 @@ namespace ConnectSdk.Tests
                 var filePathForEvent = TestConfigurator.GetFilePathForEvent(_rootFolderName, Collection, id);
                 var result = await localStorageRoot.CheckExistsAsync(filePathForEvent);
                 Assert.Equal(ExistenceCheckResult.FileExists, result);
-                
+
+            }
+
+            [Fact]
+            public async Task It_should_serialize_id_to_file()
+            {
+                var id = Guid.NewGuid();
+                var localStorageRoot = FileSystem.Current.LocalStorage;
+
+                await _connect.Add(Collection, new[] { new { id } });
+
+                var filePathForEvent = TestConfigurator.GetFilePathForEvent(_rootFolderName, Collection, id);
+                var file = await localStorageRoot.GetFileAsync(filePathForEvent);
+                var contents = await file.ReadAllTextAsync();
+                Assert.Contains(string.Format("\"id\": \"{0}\"", id), contents);
+
+            }
+
+            [Fact]
+            public async Task It_should_serialize_local_dates_in_iso_utc_format()
+            {
+                var id = Guid.NewGuid();
+                var utcDateTime = new DateTime(2015, 07, 17, 11, 11, 11, DateTimeKind.Utc);
+                var localTime = utcDateTime.ToLocalTime();
+                var localStorageRoot = FileSystem.Current.LocalStorage;
+
+                await _connect.Add(Collection, new[] { new { id, SomeDate = localTime } });
+
+                var filePathForEvent = TestConfigurator.GetFilePathForEvent(_rootFolderName, Collection, id);
+                var file = await localStorageRoot.GetFileAsync(filePathForEvent);
+                var contents = await file.ReadAllTextAsync();
+
+                Assert.Contains("\"SomeDate\": \"2015-07-17T11:11:11Z\"", contents);
             }
 
             public async void Dispose()

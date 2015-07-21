@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace ConnectSdk
@@ -9,9 +10,9 @@ namespace ConnectSdk
         protected const string ReservedPrefix = "tp_";
         protected readonly JObject EventData;
 
-        public Event(object eventData)
+        public Event(object eventData, JsonSerializer serializer)
         {
-            var data = JObject.FromObject(eventData);
+            var data = JObject.FromObject(eventData, serializer);
             EventData = data;
             DefaultProperties();
             Validate();
