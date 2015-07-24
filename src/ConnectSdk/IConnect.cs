@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using ConnectSdk.Querying;
 
 namespace ConnectSdk
 {
@@ -14,5 +16,9 @@ namespace ConnectSdk
         Task Add(string collectionName, IEnumerable<object> eventData);
 
         Task<EventBatchPushResponse> PushPending();
+
+        IQuery<TResult> Query<TResult>(string collectionName);
+
+        IQuery<Dictionary<string, object>> Query(string collectionName);
     }
 }

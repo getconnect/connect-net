@@ -96,9 +96,11 @@
     <Compile Include="Api\CaptureHttpEventEndpoint.cs" />
     <Compile Include="Api\CaptureHttpHandler.cs" />
     <Compile Include="Api\TestConfigurator.cs" />
+    <Compile Include="ConnectClientQueryTests.cs" />
     <Compile Include="ConnectClientStoreTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ConnectClientPushTests.cs" />
+    <Compile Include="Querying\QueryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -110,6 +112,7 @@
       <Name>ConnectSdk</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

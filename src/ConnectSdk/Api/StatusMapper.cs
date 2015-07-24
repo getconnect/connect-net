@@ -4,30 +4,30 @@ namespace ConnectSdk.Api
 {
     public static class StatusMapper
     {
-        public static EventPushResponseStatus MapStatusCode(HttpStatusCode statusCode)
+        public static ResponseStatus MapStatusCode(HttpStatusCode statusCode)
         {
             if (statusCode >= HttpStatusCode.OK && statusCode <= (HttpStatusCode) 299)
             {
-                return EventPushResponseStatus.Successfull;
+                return ResponseStatus.Successfull;
             }
             else if (statusCode == HttpStatusCode.Conflict)
             {
-                return EventPushResponseStatus.Duplicate;
+                return ResponseStatus.Duplicate;
             }
             else if (statusCode == (HttpStatusCode)422)
             {
-                return EventPushResponseStatus.EventFormatError;
+                return ResponseStatus.EventFormatError;
             }
             else if (statusCode == HttpStatusCode.NotAcceptable)
             {
-                return EventPushResponseStatus.EventFormatError;
+                return ResponseStatus.EventFormatError;
             }
             else if (statusCode == HttpStatusCode.BadGateway || statusCode == HttpStatusCode.GatewayTimeout)
             {
-                return EventPushResponseStatus.NetworkError;
+                return ResponseStatus.NetworkError;
             }
                 
-            return EventPushResponseStatus.GeneralError;
+            return ResponseStatus.GeneralError;
         }
     }
 }

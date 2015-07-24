@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ConnectSdk.Api;
 using ConnectSdk.Config;
+using ConnectSdk.Querying;
 using ConnectSdk.Store;
 using Newtonsoft.Json;
 
@@ -56,12 +57,22 @@ namespace ConnectSdk
                 foreach (var eventPushResponse in keyedResponses.Value)
                 {
                     var status = eventPushResponse.Status;
-                    if (status == EventPushResponseStatus.Successfull || status == EventPushResponseStatus.Duplicate)
+                    if (status == ResponseStatus.Successfull || status == ResponseStatus.Duplicate)
                         await EventStore.Acknowlege(keyedResponses.Key, eventPushResponse.Event);
                 }
             }
 
             return results;
+        }
+
+        public virtual IQuery<TResult> Query<TResult>(string collectionName)
+        {
+            return new Query<TResult>(collectionName, HttpEventEndpoint);
+        }
+
+        public virtual IQuery<Dictionary<string, object>> Query(string collectionName)
+        {
+            return Query<Dictionary<string, object>>(collectionName);
         }
     }
 }

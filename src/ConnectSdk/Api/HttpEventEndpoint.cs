@@ -5,6 +5,8 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using ConnectSdk.Config;
+using ConnectSdk.Querying;
+using Newtonsoft.Json;
 
 namespace ConnectSdk.Api
 {
@@ -50,6 +52,20 @@ namespace ConnectSdk.Api
 
                 var eventBatchPushResponse = ResponseParser.ParseEventResponseBatch(response.StatusCode, responseText, eventDataByCollection);
                 return eventBatchPushResponse;
+            }
+        }
+
+        public async Task<QueryResponse<TResult>> Query<TResult>(string collectionName, IQuery<TResult> query)
+        {
+            using (var client = ConfigureClient())
+            {
+                var response = await client.GetAsync($"events/{collectionName}?query={query}")
+                    .ConfigureAwait(false);
+                var responseText = await response.Content.ReadAsStringAsync();
+                var queryResponse = JsonConvert.DeserializeObject<QueryResponse<TResult>>(responseText);
+                queryResponse.Status = StatusMapper.MapStatusCode(response.StatusCode);
+                queryResponse.HttpStatusCode = response.StatusCode;
+                return queryResponse;
             }
         }
 

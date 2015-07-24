@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ConnectSdk.Config;
+using ConnectSdk.Querying;
 
 namespace ConnectSdk
 {
@@ -41,6 +42,16 @@ namespace ConnectSdk
         public static Task<EventBatchPushResponse> PushPending()
         {
             return _connect.PushPending();
+        }
+
+        public static IQuery<TResult> Query<TResult>(string collectionName)
+        {
+            return _connect.Query<TResult>(collectionName);
+        }
+
+        public static IQuery<Dictionary<string, object>> Query(string collectionName)
+        {
+            return _connect.Query(collectionName);
         }
     }
 }

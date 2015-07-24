@@ -93,7 +93,7 @@ namespace ConnectSdk.Tests
 
                 var result = await _connect.Push("test", new { Hello = "World" });
 
-                Assert.Equal(EventPushResponseStatus.Successfull, result.Status);
+                Assert.Equal(ResponseStatus.Successfull, result.Status);
             }
 
             [Fact]
@@ -142,7 +142,7 @@ namespace ConnectSdk.Tests
 
                 var result = await _connect.Push("test", new { Hello = "World" });
 
-                Assert.Equal(EventPushResponseStatus.Duplicate, result.Status);
+                Assert.Equal(ResponseStatus.Duplicate, result.Status);
             }
 
             [Fact]
@@ -182,7 +182,7 @@ namespace ConnectSdk.Tests
 
                 var result = await _connect.Push("test", new { Hello = "World" });
 
-                Assert.Equal(EventPushResponseStatus.EventFormatError, result.Status);
+                Assert.Equal(ResponseStatus.EventFormatError, result.Status);
             }
 
             [Fact]
@@ -277,7 +277,7 @@ namespace ConnectSdk.Tests
 
                 var firstTestResponse = _testHandler.ParsedRequestBody["test"][0];
 
-                Assert.Equal(EventPushResponseStatus.Successfull, result.Status);
+                Assert.Equal(ResponseStatus.Successfull, result.Status);
             }
 
             [Fact]
@@ -288,7 +288,7 @@ namespace ConnectSdk.Tests
 
                 var firstTestResponse = _testHandler.ParsedRequestBody["test"][0];
 
-                Assert.Equal(EventPushResponseStatus.Successfull, result.ResponsesByCollection["test"][0].Status);
+                Assert.Equal(ResponseStatus.Successfull, result.ResponsesByCollection["test"][0].Status);
             }
 
             [Fact]
@@ -333,7 +333,7 @@ namespace ConnectSdk.Tests
 
                 var firstTestResponse = _testHandler.ParsedRequestBody["test"][0];
 
-                Assert.Equal(EventPushResponseStatus.Successfull, result.Status);
+                Assert.Equal(ResponseStatus.Successfull, result.Status);
             }
 
             [Fact]
@@ -344,7 +344,7 @@ namespace ConnectSdk.Tests
 
                 var firstTestResponse = _testHandler.ParsedRequestBody["test"][0];
 
-                Assert.Equal(EventPushResponseStatus.Duplicate, result.ResponsesByCollection["test"][0].Status);
+                Assert.Equal(ResponseStatus.Duplicate, result.ResponsesByCollection["test"][0].Status);
             }
 
             [Fact]
@@ -389,7 +389,7 @@ namespace ConnectSdk.Tests
 
                 var firstTestResponse = _testHandler.ParsedRequestBody["test"][0];
 
-                Assert.Equal(EventPushResponseStatus.Successfull, result.Status);
+                Assert.Equal(ResponseStatus.Successfull, result.Status);
             }
 
             [Fact]
@@ -400,7 +400,7 @@ namespace ConnectSdk.Tests
 
                 var firstTestResponse = _testHandler.ParsedRequestBody["test"][0];
 
-                Assert.Equal(EventPushResponseStatus.GeneralError, result.ResponsesByCollection["test"][0].Status);
+                Assert.Equal(ResponseStatus.GeneralError, result.ResponsesByCollection["test"][0].Status);
             }
 
             [Fact]

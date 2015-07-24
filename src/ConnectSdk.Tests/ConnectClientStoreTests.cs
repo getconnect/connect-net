@@ -179,7 +179,7 @@ namespace ConnectSdk.Tests
                 await _connect.Add(Collection, new[] { new { id } });
                 var result = (await TaskEx.WhenAll(_connect.PushPending(), _connect.PushPending()))[0];
 
-                Assert.Equal(EventPushResponseStatus.Successfull, result.Status);
+                Assert.Equal(ResponseStatus.Successfull, result.Status);
 
             }
 
@@ -191,7 +191,7 @@ namespace ConnectSdk.Tests
                 await _connect.Add(Collection, new[] { new { id } });
                 var result = (await TaskEx.WhenAll(_connect.PushPending(), _connect.PushPending()))[0];
 
-                Assert.Equal(EventPushResponseStatus.Successfull, result.ResponsesByCollection[Collection][0].Status);
+                Assert.Equal(ResponseStatus.Successfull, result.ResponsesByCollection[Collection][0].Status);
 
             }
 
@@ -250,7 +250,7 @@ namespace ConnectSdk.Tests
                 await _connect.Add(Collection, new[] { new { id } });
                 var result = (await TaskEx.WhenAll(_connect.PushPending(), _connect.PushPending()))[0];
 
-                Assert.Equal(EventPushResponseStatus.Successfull, result.Status);
+                Assert.Equal(ResponseStatus.Successfull, result.Status);
 
             }
 
@@ -262,7 +262,7 @@ namespace ConnectSdk.Tests
                 await _connect.Add(Collection, new[] { new { id } });
                 var result = (await TaskEx.WhenAll(_connect.PushPending(), _connect.PushPending()))[0];
 
-                Assert.Equal(EventPushResponseStatus.Duplicate, result.ResponsesByCollection[Collection][0].Status);
+                Assert.Equal(ResponseStatus.Duplicate, result.ResponsesByCollection[Collection][0].Status);
 
             }
 

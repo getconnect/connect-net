@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace ConnectSdk.Tests.Api
         public JObject ParsedRequestBody { get; private set; }
         public string RequestBody { get; private set; }
         public IDictionary<string, string> Headers { get; private set; }
+        public Uri Uri { get; private set; }
 
         public CaptureHttpHandler(string response = "", HttpStatusCode statusCode = HttpStatusCode.OK)
         {
@@ -26,9 +28,14 @@ namespace ConnectSdk.Tests.Api
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
             CancellationToken cancellationToken)
         {
-            RequestBody = await request.Content.ReadAsStringAsync();
+            if (request.Content != null)
+            {
+                RequestBody = await request.Content.ReadAsStringAsync();
+                ParsedRequestBody = JObject.Parse(RequestBody);
+            }
+            Uri = request.RequestUri;
             Headers = request.Headers.ToDictionary(header => header.Key, header => header.Value.FirstOrDefault());
-            ParsedRequestBody = JObject.Parse(RequestBody);
+            
             var httpResponseMessage = new HttpResponseMessage(_statusCode)
             {
                 Content = new StringContent(_response)
