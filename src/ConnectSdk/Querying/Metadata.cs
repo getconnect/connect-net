@@ -1,8 +1,10 @@
+using System.Collections.Generic;
+
 namespace ConnectSdk.Querying
 {
     public class Metadata
     {
-        public string[] Groups { get; }
+        public IEnumerable<string> Groups { get; }
         public Interval? Interval { get; }
         public string Timezone { get; }
 

@@ -49,7 +49,7 @@ namespace ConnectSdk.Tests
             public WhenQueryingWithoutAnInterval()
             {
                 var responseText =
-                    @"{""metadata"": {""timezone"":""UTC"", ""groups"": [""hello""]},results:[{""hello"": ""world"", ""total"": 10}]}";
+                    @"{""metadata"": {""timezone"":""UTC"", ""groups"": [""hello""]},results:[{""hello"": ""world"", ""total"": 10, ""_count"": 1}]}";
 
                 _testHandler = new CaptureHttpHandler(responseText);
                 _connect = TestConfigurator.GetTestableClient(_testHandler);
@@ -60,7 +60,27 @@ namespace ConnectSdk.Tests
             {
                 var results = await _connect.Query(_collection).Execute();
 
-                Assert.Equal("hello", results.Metadata.Groups[0]);
+                Assert.Equal("hello", results.Metadata.Groups.ElementAt(0));
+            }
+
+            [Fact]
+            public async Task It_should_generate_the_original_selects()
+            {
+                var results = await _connect.Query(_collection).Execute();
+
+                Assert.Equal(new [] { "total" }, results.Selects().ToArray());
+            }
+
+            [Fact]
+            public async Task It_should_generate_no_selects_for_empty_results()
+            {
+                var responseText = @"{""metadata"": {""interval"":""minutely"", ""timezone"":""UTC"", ""groups"": [""hello""]},results:[]}";
+
+                var testHandler = new CaptureHttpHandler(responseText);
+                var connect = TestConfigurator.GetTestableClient(testHandler);
+                var results = await connect.Query(_collection).Execute();
+
+                Assert.Equal(new string[0], results.Selects().ToArray());
             }
 
             [Fact]
@@ -153,7 +173,7 @@ namespace ConnectSdk.Tests
             public WhenQueryingWithInterval()
             {
                 var responseText =
-                    @"{""metadata"": {""interval"":""minutely"", ""timezone"":""UTC"", ""groups"": [""hello""]},results:[{start:""2015-07-01T00:00:00Z"",end:""2015-07-01T00:00:00Z"",results:[{""hello"": ""world"", ""total"": 10}]}]}";
+                    @"{""metadata"": {""interval"":""minutely"", ""timezone"":""UTC"", ""groups"": [""hello""]},results:[{start:""2015-07-01T00:00:00Z"",end:""2015-07-01T00:00:00Z"",results:[{""hello"": ""world"", ""total"": 10, ""_count"": 1}]}]}";
 
                 _testHandler = new CaptureHttpHandler(responseText);
                 _connect = TestConfigurator.GetTestableClient(_testHandler);
@@ -165,6 +185,38 @@ namespace ConnectSdk.Tests
                 var results = await _connect.Query(_collection).Minutely().Execute();
 
                 Assert.Equal(Interval.Minutely, results.Metadata.Interval);
+            }
+
+            [Fact]
+            public async Task It_should_generate_the_original_selects()
+            {
+                var results = await _connect.Query(_collection).Minutely().Execute();
+
+                Assert.Equal(new[] { "total" }, results.Selects().ToArray());
+            }
+
+            [Fact]
+            public async Task It_should_generate_no_selects_for_empty_interval_results()
+            {
+                var responseText = @"{""metadata"": {""interval"":""minutely"", ""timezone"":""UTC"", ""groups"": [""hello""]},results:[{start:""2015-07-01T00:00:00Z"",end:""2015-07-01T00:00:00Z"",results:[]}]}";
+
+                var testHandler = new CaptureHttpHandler(responseText);
+                var connect = TestConfigurator.GetTestableClient(testHandler);
+                var results = await connect.Query(_collection).Minutely().Execute();
+
+                Assert.Equal(new string[0], results.Selects().ToArray());
+            }
+
+            [Fact]
+            public async Task It_should_generate_no_selects_for_empty_results()
+            {
+                var responseText = @"{""metadata"": {""interval"":""minutely"", ""timezone"":""UTC"", ""groups"": [""hello""]},results:[]}";
+
+                var testHandler = new CaptureHttpHandler(responseText);
+                var connect = TestConfigurator.GetTestableClient(testHandler);
+                var results = await connect.Query(_collection).Minutely().Execute();
+
+                Assert.Equal(new string[0], results.Selects().ToArray());
             }
 
             [Fact]

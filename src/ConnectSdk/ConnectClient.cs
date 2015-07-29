@@ -70,9 +70,9 @@ namespace ConnectSdk
             return new Query<TResult>(collectionName, HttpEventEndpoint);
         }
 
-        public virtual IQuery<Dictionary<string, object>> Query(string collectionName)
+        public virtual IQuery<IDictionary<string, object>> Query(string collectionName)
         {
-            return Query<Dictionary<string, object>>(collectionName);
+            return Query<IDictionary<string, object>>(collectionName);
         }
     }
 }

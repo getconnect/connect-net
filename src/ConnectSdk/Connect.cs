@@ -49,7 +49,7 @@ namespace ConnectSdk
             return _connect.Query<TResult>(collectionName);
         }
 
-        public static IQuery<Dictionary<string, object>> Query(string collectionName)
+        public static IQuery<IDictionary<string, object>> Query(string collectionName)
         {
             return _connect.Query(collectionName);
         }
