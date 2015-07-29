@@ -4,21 +4,6 @@ using System.Reflection;
 
 namespace ConnectSdk.Querying
 {
-    public enum FilterOperation
-    {
-        Gt,
-        Gte,
-        Lt,
-        Lte,
-        Exists,
-        Contains,
-        StartsWith,
-        EndsWith,
-        Eq,
-        Neq,
-        In
-    }
-
     public static class Filters
     {
         public static Filter Gt(object value)
@@ -88,10 +73,10 @@ namespace ConnectSdk.Querying
 
         public static IQuery<TResult> Where<TResult>(this IQuery<TResult> query, object filters)
         {
-            var newFilters =
-                filters.GetType()
-                    .GetRuntimeProperties()
-                    .ToDictionary(property => property.Name, property => property.GetValue(filters, null) as Filter);
+            var newFilters = filters.GetType()
+                                .GetRuntimeProperties()
+                                .ToDictionary(property => property.Name, 
+                                              property => property.GetValue(filters, null) as Filter);
 
             return query.Where(newFilters);
         }
@@ -131,8 +116,8 @@ namespace ConnectSdk.Querying
             var currentFilters = query.Filter ?? new Dictionary<string, Filter>();
 
             var allFilters = newFilters.Concat(currentFilters)
-                .ToLookup(pair => pair.Key, pair => pair.Value)
-                .ToDictionary(group => group.Key, group => group.First());
+                                .ToLookup(pair => pair.Key, pair => pair.Value)
+                                .ToDictionary(group => group.Key, group => group.First());
 
             return query.UpdateWith<TResult>(filters: allFilters);
         }

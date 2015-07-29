@@ -43,7 +43,9 @@
     <Compile Include="EventBatchPushResponse.cs" />
     <Compile Include="Api\StatusMapper.cs" />
     <Compile Include="EventPushResponse.cs" />
+    <Compile Include="Querying\AggregationOperation.cs" />
     <Compile Include="Querying\FieldError.cs" />
+    <Compile Include="Querying\FilterOperation.cs" />
     <Compile Include="Querying\IQuery.cs" />
     <Compile Include="Querying\Metadata.cs" />
     <Compile Include="Querying\QueryIntervalResult.cs" />

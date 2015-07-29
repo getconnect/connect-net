@@ -4,15 +4,6 @@ using System.Reflection;
 
 namespace ConnectSdk.Querying
 {
-    public enum AggregationOperation
-    {
-        Count,
-        Min,
-        Max,
-        Avg,
-        Sum
-    }
-
     public static class Aggregations
     {
         public static Aggregation Sum(string propertyPath)
@@ -52,16 +43,16 @@ namespace ConnectSdk.Querying
 
         public static IQuery<TResult> Select<TResult>(this IQuery<TResult> query, object aggregations)
         {
-            var newAggregations =
-                aggregations.GetType()
-                    .GetRuntimeProperties()
-                    .ToDictionary(property => property.Name, property => property.GetValue(aggregations, null) as Aggregation);
+            var newAggregations = aggregations.GetType()
+                                    .GetRuntimeProperties()
+                                    .ToDictionary(property => property.Name, 
+                                                  property => property.GetValue(aggregations, null) as Aggregation);
 
             var currentAggregations = query.Select ?? new Dictionary<string, Aggregation>();
 
             var allAggregations = currentAggregations.Concat(newAggregations)
-                .ToLookup(pair => pair.Key, pair => pair.Value)
-                .ToDictionary(group => group.Key, group => group.First());
+                                    .ToLookup(pair => pair.Key, pair => pair.Value)
+                                    .ToDictionary(group => group.Key, group => group.First());
 
             return query.UpdateWith<TResult>(aggregations: allAggregations);
         }
