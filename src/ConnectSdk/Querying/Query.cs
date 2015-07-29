@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ConnectSdk.Api;
 using ConnectSdk.Querying.Converters;
@@ -13,76 +10,6 @@ namespace ConnectSdk.Querying
 {
     using AliasedAggregations = IDictionary<string, Aggregation>;
     using FilteredProperties = IDictionary<string, Filter>;
-
-    public class Metadata
-    {
-        public string[] Groups { get; }
-        public Interval? Interval { get; }
-        public string Timezone { get; }
-
-        public Metadata(string[] groups = null, Interval? interval = null, string timezone = null)
-        {
-            Groups = groups;
-            Interval = interval;
-            Timezone = timezone;
-        }
-    }
-
-    public class FieldError
-    {
-        public string Field { get; }
-        public string Description { get; }
-
-        public FieldError(string field, string description)
-        {
-            Field = field;
-            Description = description;
-        }
-    }
-
-    public class QueryResponse<TResult>
-    {
-        public Metadata Metadata { get; }
-        public IEnumerable<TResult> Results { get; }
-        public string ErrorMessage { get; }
-        public IDictionary<string, string> FieldErrors { get; }
-        public ResponseStatus? Status { get; set; }
-        public HttpStatusCode? HttpStatusCode { get; set; }
-
-        public QueryResponse(Metadata metadata = null, IEnumerable<TResult> results = null, string errorMessage = null, IEnumerable<FieldError> errors = null)
-        {
-            Metadata = metadata;
-            Results = results;
-            ErrorMessage = errorMessage;
-            FieldErrors = errors?.ToDictionary(fieldError => fieldError.Field, fieldError => fieldError.Description);
-        }
-    }
-
-    public class QueryIntervalResult<TResult>
-    {
-        public DateTime Start { get; }
-        public DateTime End { get; }
-        public IEnumerable<TResult> Results { get; }
-
-        public QueryIntervalResult(DateTime start, DateTime end, IEnumerable<TResult> results = null)
-        {
-            Start = start;
-            End = end;
-            Results = results;
-        }
-    }
-
-    public interface IQuery<TResult>
-    {
-        AliasedAggregations Select { get; }
-        FilteredProperties Filter { get; }
-        ITimeframe Timeframe { get; }
-        string[] GroupBy { get; }
-        object Timezone { get; }
-        Interval? Interval { get; }
-        Query<TNewResultType> UpdateWith<TNewResultType>(AliasedAggregations aggregations = null, FilteredProperties filters = null, ITimeframe timeframe = null, string[] groups = null, Interval? interval = null, object timezone = null);
-        Task<QueryResponse<TResult>> Execute();
-    }
 
     public class Query<TResult> : IQuery<TResult>
     {
