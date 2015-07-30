@@ -9,7 +9,7 @@ using Newtonsoft.Json.Serialization;
 namespace ConnectSdk.Querying
 {
     using AliasedAggregations = IDictionary<string, Aggregation>;
-    using FilteredProperties = IDictionary<string, Filter>;
+    using FilteredProperties = IDictionary<string, IEnumerable<Filter>>;
 
     public class Query<TResult> : IQuery<TResult>
     {
@@ -33,9 +33,9 @@ namespace ConnectSdk.Querying
             Serializer.ContractResolver = new CamelCasePropertyNamesContractResolver();
             Serializer.Converters.Add(new StringEnumConverter { CamelCaseText = true });
             Serializer.Converters.Add(new AggregationConverter());
-            Serializer.Converters.Add(new DictionaryKeysAsIsConverter<Aggregation>());
-            Serializer.Converters.Add(new DictionaryKeysAsIsConverter<Filter>());
+            Serializer.Converters.Add(new AggregationsConverter());
             Serializer.Converters.Add(new FilterConverter());
+            Serializer.Converters.Add(new FiltersConverter());
             Serializer.Converters.Add(new PeriodRelativeTimefameConverter());
             Serializer.Converters.Add(new RelativeTimeframeConverter());
         }

@@ -8,37 +8,37 @@ namespace ConnectSdk.Querying
     {
         public static Aggregation Sum(string propertyPath)
         {
-            return Aggregate(AggregationOperation.Sum, propertyPath);
+            return Use(AggregationOperation.Sum, propertyPath);
         }
 
         public static Aggregation Min(string propertyPath)
         {
-            return Aggregate(AggregationOperation.Min, propertyPath);
+            return Use(AggregationOperation.Min, propertyPath);
         }
 
         public static Aggregation Max(string propertyPath)
         {
-            return Aggregate(AggregationOperation.Max, propertyPath);
+            return Use(AggregationOperation.Max, propertyPath);
         }
 
         public static Aggregation Avg(string propertyPath)
         {
-            return Aggregate(AggregationOperation.Avg, propertyPath);
+            return Use(AggregationOperation.Avg, propertyPath);
         }
         
         public static Aggregation Count()
         {
-            return Aggregate(AggregationOperation.Count);
+            return Use(AggregationOperation.Count);
         }
         
-        public static Aggregation Aggregate(string aggregationOPeration, string propertyPath = null)
+        public static Aggregation Use(string aggregationOPeration, string propertyPath = null)
         {
             return new Aggregation(aggregationOPeration, propertyPath);
         }
         
-        public static Aggregation Aggregate(AggregationOperation aggregationOperation, string propertyPath = null)
+        public static Aggregation Use(AggregationOperation aggregationOperation, string propertyPath = null)
         {
-            return Aggregate(aggregationOperation.ToString().ToLowerInvariant(), propertyPath);
+            return Use(aggregationOperation.ToString().ToLowerInvariant(), propertyPath);
         }
 
         public static IQuery<TResult> Select<TResult>(this IQuery<TResult> query, object aggregations)

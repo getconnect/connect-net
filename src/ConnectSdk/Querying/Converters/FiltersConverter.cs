@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace ConnectSdk.Querying.Converters
 {
-    public class DictionaryKeysAsIsConverter<TValue> : JsonConverter
+    public class FiltersConverter : JsonConverter
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var values = (IDictionary<string, TValue>) value;
+            var values = (IDictionary<string, IEnumerable<Filter>>) value;
 
             writer.WriteStartObject();
-            foreach (var aliasedAggregation in values)
+            foreach (var propertyFilters in values)
             {
-                writer.WritePropertyName(aliasedAggregation.Key);
-                serializer.Serialize(writer, aliasedAggregation.Value);
+                writer.WritePropertyName(propertyFilters.Key);
+                var filtersForProperty = propertyFilters.Value.ToDictionary(filter => filter.Operator, filter => filter.Value);
+                serializer.Serialize(writer, filtersForProperty);
             }
             writer.WriteEndObject();
         }
@@ -28,7 +30,7 @@ namespace ConnectSdk.Querying.Converters
 
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(Dictionary<string, TValue>);
+            return objectType == typeof(Dictionary<string, IEnumerable<Filter>>);
         }
     }
 }

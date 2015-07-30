@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ConnectSdk.Querying;
 using static ConnectSdk.Querying.Aggregations;
 using static ConnectSdk.Querying.Filters;
@@ -145,6 +146,30 @@ namespace ConnectSdk.Tests.Querying
             }
 
             [Fact]
+            public void It_should_add_dictionary_of_array_of_filters()
+            {
+                var query = baseQuery
+                    .Where(new Dictionary<string, Filter[]>
+                    {
+                        ["My.Prop"] = new[] { Gt(5), Lt(5) }
+                    }).ToString();
+
+                Assert.Equal("{\"filter\":{\"My.Prop\":{\"gt\":5,\"lt\":5}}}", query);
+            }
+
+            [Fact]
+            public void It_should_add_dictionary_of_enumerable_of_filters()
+            {
+                var query = baseQuery
+                    .Where(new Dictionary<string, IEnumerable<Filter>>
+                    {
+                        ["My.Prop"] = new[] { Gt(5), Lt(5) }.AsEnumerable()
+                    }).ToString();
+
+                Assert.Equal("{\"filter\":{\"My.Prop\":{\"gt\":5,\"lt\":5}}}", query);
+            }
+
+            [Fact]
             public void It_should_merge_filters()
             {
                 var query = baseQuery
@@ -154,10 +179,23 @@ namespace ConnectSdk.Tests.Querying
                     })
                     .Where(new
                     {
+                        MyProp = Lt(5),
                         OtherProp = Gt(5)
                     }).ToString();
 
-                Assert.Equal("{\"filter\":{\"OtherProp\":{\"gt\":5},\"MyProp\":{\"gt\":5}}}", query);
+                Assert.Equal("{\"filter\":{\"MyProp\":{\"lt\":5,\"gt\":5},\"OtherProp\":{\"gt\":5}}}", query);
+            }
+
+            [Fact]
+            public void It_should_multiple_filters_for_property()
+            {
+                var query = baseQuery
+                    .Where(new
+                    {
+                        MyProp = new[] { Gt(5), Lt(5) }
+                    }).ToString();
+
+                Assert.Equal("{\"filter\":{\"MyProp\":{\"gt\":5,\"lt\":5}}}", query);
             }
 
             [Fact]

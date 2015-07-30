@@ -31,12 +31,24 @@ namespace ConnectSdk.Tests
             }
 
             [Fact]
-            public async Task It_should_populate_groups_metadata()
+            public async Task It_should_get_using_collection_and_query()
             {
                 var results = await _connect.Query(_collection).Execute();
                 var uri = _testHandler.Uri;
 
                 Assert.Equal($"https://api.getconnect.io/events/{_collection}?query={{}}", uri.ToString());
+            }
+
+            [Fact]
+            public async Task It_should_url_encode_collection_and_query()
+            {
+                var results = await _connect.Query("my coll").Select(new
+                {
+                    Test = Aggregations.Sum("Url Encoding")
+                }).Execute();
+                var uri = _testHandler.Uri;
+
+                Assert.Equal("https://api.getconnect.io/events/my+coll?query={\"select\":{\"Test\":{\"sum\":\"Url+Encoding\"}}}", uri.ToString());
             }
         }
 

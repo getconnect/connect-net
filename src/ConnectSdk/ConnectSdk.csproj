@@ -44,6 +44,7 @@
     <Compile Include="Api\StatusMapper.cs" />
     <Compile Include="EventPushResponse.cs" />
     <Compile Include="Querying\AggregationOperation.cs" />
+    <Compile Include="Querying\Converters\FiltersConverter.cs" />
     <Compile Include="Querying\FieldError.cs" />
     <Compile Include="Querying\FilterOperation.cs" />
     <Compile Include="Querying\IQuery.cs" />
@@ -66,7 +67,7 @@
     <Compile Include="Querying\Aggregation.cs" />
     <Compile Include="Querying\Converters\AggregationConverter.cs" />
     <Compile Include="Querying\Aggregations.cs" />
-    <Compile Include="Querying\Converters\DictionaryKeysAsIsConverter.cs" />
+    <Compile Include="Querying\Converters\AggregationsConverter.cs" />
     <Compile Include="Querying\AliasedAggregation.cs" />
     <Compile Include="Querying\Filter.cs" />
     <Compile Include="Querying\Converters\FilterConverter.cs" />
