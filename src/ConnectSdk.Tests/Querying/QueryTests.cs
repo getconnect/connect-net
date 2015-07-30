@@ -199,6 +199,23 @@ namespace ConnectSdk.Tests.Querying
             }
 
             [Fact]
+            public void It_should_take_support_mixed_values()
+            {
+                var query = baseQuery
+                    .Where(new
+                    {
+                        MyProp = new[] {Gt(5), Lt(10)},
+                        OtherProp = Gt(1)
+                    })
+                    .Where(new
+                    {
+                        
+                    }).ToString();
+
+                Assert.Equal("{\"filter\":{\"MyProp\":{\"gt\":5,\"lt\":10},\"OtherProp\":{\"gt\":1}}}", query);
+            }
+
+            [Fact]
             public void It_should_take_latest_filter()
             {
                 var query = baseQuery
