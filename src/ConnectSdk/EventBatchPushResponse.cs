@@ -16,12 +16,12 @@ namespace ConnectSdk
 
         public IDictionary<string, IList<EventPushResponse>> ResponsesByCollection { get;  }
         public HttpStatusCode HttpStatusCode { get;  }
-        public ResponseStatus Status { get;  }
+        public EventPushResponseStatus Status { get;  }
         public string ErrorMessage { get;  }
 
-        private ResponseStatus MapStatus(HttpStatusCode httpStatusCode)
+        private EventPushResponseStatus MapStatus(HttpStatusCode httpStatusCode)
         {
-            return StatusMapper.MapStatusCode(httpStatusCode);
+            return StatusMapper.MapPushStatusCode(httpStatusCode);
         }
     }
 }

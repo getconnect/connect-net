@@ -15,7 +15,7 @@ namespace ConnectSdk
             Event = @event;
         }
 
-        public EventPushResponse(ResponseStatus status, Event @event, string errorErrorMessage = null, IDictionary<string, string> fieldErrors = null)
+        public EventPushResponse(EventPushResponseStatus status, Event @event, string errorErrorMessage = null, IDictionary<string, string> fieldErrors = null)
         {
             Status = status;
             ErrorMessage = errorErrorMessage;
@@ -24,14 +24,14 @@ namespace ConnectSdk
         }
 
         public Event Event { get; }
-        public ResponseStatus Status { get; }
+        public EventPushResponseStatus Status { get; }
         public HttpStatusCode? HttpStatusCode { get; }
         public string ErrorMessage { get; }
         public IDictionary<string, string> FieldErrors { get; }
 
-        private ResponseStatus MapStatus(HttpStatusCode httpStatusCode)
+        private EventPushResponseStatus MapStatus(HttpStatusCode httpStatusCode)
         {
-            return StatusMapper.MapStatusCode(httpStatusCode);
+            return StatusMapper.MapPushStatusCode(httpStatusCode);
         }
     }
 }

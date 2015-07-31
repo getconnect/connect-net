@@ -64,7 +64,7 @@ namespace ConnectSdk.Api
                     .ConfigureAwait(false);
                 var responseText = await response.Content.ReadAsStringAsync();
                 var queryResponse = JsonConvert.DeserializeObject<QueryResponse<TResult>>(responseText);
-                queryResponse.Status = StatusMapper.MapStatusCode(response.StatusCode);
+                queryResponse.Status = StatusMapper.MapQueryStatusCode(response.StatusCode);
                 queryResponse.HttpStatusCode = response.StatusCode;
                 return queryResponse;
             }

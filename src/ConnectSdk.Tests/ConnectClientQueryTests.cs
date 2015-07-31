@@ -376,7 +376,7 @@ namespace ConnectSdk.Tests
             {
                 var results = await _connect.Query(_collection).Execute();
 
-                Assert.Equal(ResponseStatus.Successfull, results.Status);
+                Assert.Equal(QueryResponseStatus.Successfull, results.Status);
             }
         }
     }

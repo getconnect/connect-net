@@ -57,7 +57,7 @@ namespace ConnectSdk
                 foreach (var eventPushResponse in keyedResponses.Value)
                 {
                     var status = eventPushResponse.Status;
-                    if (status == ResponseStatus.Successfull || status == ResponseStatus.Duplicate)
+                    if (status == EventPushResponseStatus.Successfull || status == EventPushResponseStatus.Duplicate)
                         await EventStore.Acknowlege(keyedResponses.Key, eventPushResponse.Event);
                 }
             }

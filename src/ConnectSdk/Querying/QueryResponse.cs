@@ -43,7 +43,7 @@ namespace ConnectSdk.Querying
         public IEnumerable<TResult> Results { get; }
         public string ErrorMessage { get; }
         public IDictionary<string, string> FieldErrors { get; }
-        public ResponseStatus? Status { get; set; }
+        public QueryResponseStatus? Status { get; set; }
         public HttpStatusCode? HttpStatusCode { get; set; }
 
         public QueryResponse(Metadata metadata = null, IEnumerable<TResult> results = null, string errorMessage = null, IEnumerable<FieldError> errors = null)

@@ -1,6 +1,6 @@
 namespace ConnectSdk
 {
-    public enum ResponseStatus
+    public enum EventPushResponseStatus
     {
         Successfull,
         Duplicate,

@@ -51,7 +51,7 @@
     <Compile Include="Querying\Metadata.cs" />
     <Compile Include="Querying\QueryIntervalResult.cs" />
     <Compile Include="Querying\QueryResponse.cs" />
-    <Compile Include="ResponseStatus.cs" />
+    <Compile Include="EventPushResponseStatus.cs" />
     <Compile Include="Api\HttpEventEndpoint.cs" />
     <Compile Include="Api\RequestBodyGenerator.cs" />
     <Compile Include="Api\ResponseParser.cs" />
@@ -85,6 +85,7 @@
     <Compile Include="Querying\TimeType.cs" />
     <Compile Include="Querying\Timeframes.cs" />
     <Compile Include="Querying\Timezones.cs" />
+    <Compile Include="Querying\QueryResponseStatus.cs" />
     <Compile Include="Store\FileEventStore.cs" />
     <Compile Include="Store\IEventStore.cs" />
   </ItemGroup>
