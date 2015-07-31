@@ -23,15 +23,15 @@ namespace ConnectSdk
             Event = @event;
         }
 
-        public Event Event { get; private set; }
-        public EventPushResponseStatus Status { get; private set; }
-        public HttpStatusCode? HttpStatusCode { get; private set; }
-        public string ErrorMessage { get; private set; }
-        public IDictionary<string, string> FieldErrors { get; private set; }
+        public Event Event { get; }
+        public EventPushResponseStatus Status { get; }
+        public HttpStatusCode? HttpStatusCode { get; }
+        public string ErrorMessage { get; }
+        public IDictionary<string, string> FieldErrors { get; }
 
         private EventPushResponseStatus MapStatus(HttpStatusCode httpStatusCode)
         {
-            return StatusMapper.MapStatusCode(httpStatusCode);
+            return StatusMapper.MapPushStatusCode(httpStatusCode);
         }
     }
 }

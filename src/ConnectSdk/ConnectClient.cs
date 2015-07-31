@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ConnectSdk.Api;
 using ConnectSdk.Config;
+using ConnectSdk.Querying;
 using ConnectSdk.Store;
 using Newtonsoft.Json;
 
@@ -62,6 +63,16 @@ namespace ConnectSdk
             }
 
             return results;
+        }
+
+        public virtual IQuery<TResult> Query<TResult>(string collectionName)
+        {
+            return new Query<TResult>(collectionName, HttpEventEndpoint);
+        }
+
+        public virtual IQuery<IDictionary<string, object>> Query(string collectionName)
+        {
+            return Query<IDictionary<string, object>>(collectionName);
         }
     }
 }

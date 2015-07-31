@@ -30,6 +30,16 @@ namespace ConnectSdk.Tests
             }
 
             [Fact]
+            public async Task It_should_url_encode()
+            {
+
+                var result = await _connect.Push("my coll", new { Hello = "World" });
+                var uri = _testHandler.Uri;
+                Assert.Equal("World", _testHandler.ParsedRequestBody["Hello"]);
+                Assert.Equal("https://api.getconnect.io/events/my+coll", uri.ToString());
+            }
+
+            [Fact]
             public async Task It_should_assign_an_id_to_event()
             {
 

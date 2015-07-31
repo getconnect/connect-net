@@ -61,7 +61,7 @@ namespace ConnectSdk.Api
 
         private static bool IsSuccessStatusCode(HttpStatusCode statusCode)
         {
-            return StatusMapper.MapStatusCode(statusCode) == EventPushResponseStatus.Successfull;
+            return StatusMapper.MapPushStatusCode(statusCode) == EventPushResponseStatus.Successfull;
         }
     }
 }

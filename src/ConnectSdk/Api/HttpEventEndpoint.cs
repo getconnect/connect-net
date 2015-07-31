@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using ConnectSdk.Config;
+using ConnectSdk.Querying;
+using Newtonsoft.Json;
 
 namespace ConnectSdk.Api
 {
@@ -27,7 +30,7 @@ namespace ConnectSdk.Api
             using (var client = ConfigureClient())
             {
                 var eventBody = RequestBodyGenerator.GenerateEventBody(eventData);
-                var response = await client.PostAsync("events/" + collectionName, new StringContent(eventBody, Encoding.UTF8, ContentType))
+                var response = await client.PostAsync($"events/{WebUtility.UrlEncode(collectionName)}", new StringContent(eventBody, Encoding.UTF8, ContentType))
                     .ConfigureAwait(false);
                 var responseText = await response.Content.ReadAsStringAsync();
                 return ResponseParser.ParseEventResponse(response.StatusCode, responseText, eventData);
@@ -50,6 +53,20 @@ namespace ConnectSdk.Api
 
                 var eventBatchPushResponse = ResponseParser.ParseEventResponseBatch(response.StatusCode, responseText, eventDataByCollection);
                 return eventBatchPushResponse;
+            }
+        }
+
+        public async Task<QueryResponse<TResult>> Query<TResult>(string collectionName, IQuery<TResult> query)
+        {
+            using (var client = ConfigureClient())
+            {
+                var response = await client.GetAsync($"events/{WebUtility.UrlEncode(collectionName)}?query={WebUtility.UrlEncode(query.ToString())}")
+                    .ConfigureAwait(false);
+                var responseText = await response.Content.ReadAsStringAsync();
+                var queryResponse = JsonConvert.DeserializeObject<QueryResponse<TResult>>(responseText);
+                queryResponse.Status = StatusMapper.MapQueryStatusCode(response.StatusCode);
+                queryResponse.HttpStatusCode = response.StatusCode;
+                return queryResponse;
             }
         }
 
