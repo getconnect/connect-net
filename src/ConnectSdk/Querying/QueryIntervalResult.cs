@@ -5,14 +5,15 @@ namespace ConnectSdk.Querying
 {
     public class QueryIntervalResult<TResult>
     {
-        public DateTime Start { get; }
-        public DateTime End { get; }
+        public IntervalPeriodResult Interval { get; }
+
+        public DateTime Start => Interval.Start;
+        public DateTime End => Interval.End;
         public IEnumerable<TResult> Results { get; }
 
-        public QueryIntervalResult(DateTime start, DateTime end, IEnumerable<TResult> results = null)
+        public QueryIntervalResult(IntervalPeriodResult interval, IEnumerable<TResult> results = null)
         {
-            Start = start;
-            End = end;
+            Interval = interval;
             Results = results;
         }
     }

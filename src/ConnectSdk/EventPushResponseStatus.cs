@@ -2,8 +2,9 @@ namespace ConnectSdk
 {
     public enum EventPushResponseStatus
     {
-        Successfull,
+        Successful,
         Duplicate,
+        Unauthorized,
         EventFormatError,
         NetworkError,
         GeneralError

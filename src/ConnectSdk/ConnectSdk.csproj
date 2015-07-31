@@ -47,6 +47,7 @@
     <Compile Include="Querying\Converters\FiltersConverter.cs" />
     <Compile Include="Querying\FieldError.cs" />
     <Compile Include="Querying\FilterOperation.cs" />
+    <Compile Include="Querying\IntervalPeriodResult.cs" />
     <Compile Include="Querying\IQuery.cs" />
     <Compile Include="Querying\Metadata.cs" />
     <Compile Include="Querying\QueryIntervalResult.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Querying\RelativeTimefame.cs" />
     <Compile Include="Querying\Converters\RelativeTimeframeConverter.cs" />
     <Compile Include="Querying\Converters\PeriodRelativeTimefameConverter.cs" />
+    <Compile Include="Querying\SelectsExtensions.cs" />
     <Compile Include="Querying\TimeType.cs" />
     <Compile Include="Querying\Timeframes.cs" />
     <Compile Include="Querying\Timezones.cs" />

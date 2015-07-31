@@ -9,7 +9,7 @@ namespace ConnectSdk.Api
         {
             if (statusCode >= HttpStatusCode.OK && statusCode <= (HttpStatusCode) 299)
             {
-                return EventPushResponseStatus.Successfull;
+                return EventPushResponseStatus.Successful;
             }
             else if (statusCode == HttpStatusCode.Conflict)
             {
@@ -18,6 +18,10 @@ namespace ConnectSdk.Api
             else if (statusCode == (HttpStatusCode)422)
             {
                 return EventPushResponseStatus.EventFormatError;
+            }
+            else if (statusCode == HttpStatusCode.Unauthorized)
+            {
+                return EventPushResponseStatus.Unauthorized;
             }
             else if (statusCode == HttpStatusCode.NotAcceptable)
             {
@@ -35,11 +39,15 @@ namespace ConnectSdk.Api
         {
             if (statusCode >= HttpStatusCode.OK && statusCode <= (HttpStatusCode) 299)
             {
-                return QueryResponseStatus.Successfull;
+                return QueryResponseStatus.Successful;
             }
             else if (statusCode == (HttpStatusCode)422)
             {
                 return QueryResponseStatus.QueryFormatError;
+            }
+            else if (statusCode == HttpStatusCode.Unauthorized)
+            {
+                return QueryResponseStatus.Unauthorized;
             }
             else if (statusCode == HttpStatusCode.NotAcceptable)
             {

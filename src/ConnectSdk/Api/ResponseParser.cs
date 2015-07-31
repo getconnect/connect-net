@@ -46,7 +46,7 @@ namespace ConnectSdk.Api
                 {
                     var eventResponse = keyedBatchResponse.Value[i];
                     var originalEvent = events.ElementAt(i);
-                    var status = EventPushResponseStatus.Successfull;
+                    var status = EventPushResponseStatus.Successful;
                     if (eventResponse.duplicate)
                         status = EventPushResponseStatus.Duplicate;
                     else if (!eventResponse.success)
@@ -61,7 +61,7 @@ namespace ConnectSdk.Api
 
         private static bool IsSuccessStatusCode(HttpStatusCode statusCode)
         {
-            return StatusMapper.MapPushStatusCode(statusCode) == EventPushResponseStatus.Successfull;
+            return StatusMapper.MapPushStatusCode(statusCode) == EventPushResponseStatus.Successful;
         }
     }
 }

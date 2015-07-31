@@ -63,6 +63,12 @@ namespace ConnectSdk.Api
                 var response = await client.GetAsync($"events/{WebUtility.UrlEncode(collectionName)}?query={WebUtility.UrlEncode(query.ToString())}")
                     .ConfigureAwait(false);
                 var responseText = await response.Content.ReadAsStringAsync();
+
+                if (string.IsNullOrEmpty(responseText))
+                {
+                    responseText = "{}";
+                }
+
                 var queryResponse = JsonConvert.DeserializeObject<QueryResponse<TResult>>(responseText);
                 queryResponse.Status = StatusMapper.MapQueryStatusCode(response.StatusCode);
                 queryResponse.HttpStatusCode = response.StatusCode;

@@ -185,7 +185,7 @@ namespace ConnectSdk.Tests
             public WhenQueryingWithInterval()
             {
                 var responseText =
-                    @"{""metadata"": {""interval"":""minutely"", ""timezone"":""UTC"", ""groups"": [""hello""]},results:[{start:""2015-07-01T00:00:00Z"",end:""2015-07-01T00:00:00Z"",results:[{""hello"": ""world"", ""total"": 10, ""_count"": 1}]}]}";
+                    @"{""metadata"": {""interval"":""minutely"", ""timezone"":""UTC"", ""groups"": [""hello""]},results:[{""interval"":{""start"":""2015-07-01T00:00:00Z"",""end"":""2015-07-01T00:00:00Z""},results:[{""hello"": ""world"", ""total"": 10, ""_count"": 1}]}]}";
 
                 _testHandler = new CaptureHttpHandler(responseText);
                 _connect = TestConfigurator.GetTestableClient(_testHandler);
@@ -210,7 +210,7 @@ namespace ConnectSdk.Tests
             [Fact]
             public async Task It_should_generate_no_selects_for_empty_interval_results()
             {
-                var responseText = @"{""metadata"": {""interval"":""minutely"", ""timezone"":""UTC"", ""groups"": [""hello""]},results:[{start:""2015-07-01T00:00:00Z"",end:""2015-07-01T00:00:00Z"",results:[]}]}";
+                var responseText = @"{""metadata"": {""interval"":""minutely"", ""timezone"":""UTC"", ""groups"": [""hello""]},results:[{""interval"":{""start"":""2015-07-01T00:00:00Z"",""end"":""2015-07-01T00:00:00Z""},results:[]}]}";
 
                 var testHandler = new CaptureHttpHandler(responseText);
                 var connect = TestConfigurator.GetTestableClient(testHandler);
@@ -376,7 +376,7 @@ namespace ConnectSdk.Tests
             {
                 var results = await _connect.Query(_collection).Execute();
 
-                Assert.Equal(QueryResponseStatus.Successfull, results.Status);
+                Assert.Equal(QueryResponseStatus.Successful, results.Status);
             }
         }
     }
