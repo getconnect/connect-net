@@ -4,40 +4,23 @@ namespace ConnectSdk.Config
 {
     public class BasicConfiguration : IConfiguration
     {
-        private readonly string _baseUrl;
-        private readonly string _pushKey;
-        private readonly string _projectId;
-        private readonly JsonSerializer _serializer;
-
-        public BasicConfiguration(string pushKey, string projectId, string baseUrl = null, JsonSerializer serializer = null)
+        public BasicConfiguration(string apiKey, string projectId, string baseUrl = null, JsonSerializer eventSerializer = null)
         {
-            _baseUrl = baseUrl ?? "https://api.getconnect.io";
-            _pushKey = pushKey;
-            _projectId = projectId;
-            _serializer = serializer ?? new JsonSerializer
+            BaseUrl = baseUrl ?? "https://api.getconnect.io";
+            ApiKey = apiKey;
+            ProjectId = projectId;
+            EventSerializer = eventSerializer ?? new JsonSerializer
             {
                 DateTimeZoneHandling = DateTimeZoneHandling.Utc
             };
         }
 
-        public virtual string BaseUrl
-        {
-            get { return _baseUrl; }
-        }
+        public virtual string BaseUrl { get; }
 
-        public string ProjectId
-        {
-            get { return _projectId; }
-        }
+        public string ProjectId { get; }
 
-        public virtual string WriteKey
-        {
-            get { return _pushKey; }
-        }
+        public virtual string ApiKey { get; }
 
-        public virtual JsonSerializer Serializer
-        {
-            get { return _serializer; }
-        }
+        public virtual JsonSerializer EventSerializer { get; }
     }
 }

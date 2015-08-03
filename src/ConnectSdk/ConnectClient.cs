@@ -24,7 +24,7 @@ namespace ConnectSdk
         {
             EventStore = eventStore ?? new FileEventStore(configuration.ProjectId);
             HttpEventEndpoint = eventEndpoint;
-            Serializer = configuration.Serializer;
+            Serializer = configuration.EventSerializer;
         }
 
         public virtual async Task<EventPushResponse> Push(string collectionName, object eventData)

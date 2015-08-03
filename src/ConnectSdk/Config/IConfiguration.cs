@@ -6,7 +6,7 @@ namespace ConnectSdk.Config
     {
         string ProjectId { get; }
         string BaseUrl { get; }
-        string WriteKey { get; }
-        JsonSerializer Serializer { get; }
+        string ApiKey { get; }
+        JsonSerializer EventSerializer { get; }
     }
 }

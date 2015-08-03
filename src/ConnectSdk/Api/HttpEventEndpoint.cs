@@ -81,7 +81,7 @@ namespace ConnectSdk.Api
             var client = CreateClient();
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ContentType));
-            client.DefaultRequestHeaders.Add(ApiKeyHeaderKey, Configuration.WriteKey);
+            client.DefaultRequestHeaders.Add(ApiKeyHeaderKey, Configuration.ApiKey);
             client.DefaultRequestHeaders.Add(ProjectIdHeaderKey, Configuration.ProjectId);
             return client;
         }
