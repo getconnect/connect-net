@@ -33,7 +33,7 @@ namespace ConnectSdk.Tests
             [Fact]
             public async Task It_should_get_using_collection_and_query()
             {
-                var results = await _connect.Query(_collection).Execute();
+                await _connect.Query(_collection).Execute();
                 var uri = _testHandler.Uri;
 
                 Assert.Equal($"https://api.getconnect.io/events/{_collection}?query={{}}", uri.ToString());
@@ -42,7 +42,7 @@ namespace ConnectSdk.Tests
             [Fact]
             public async Task It_should_url_encode_collection_and_query()
             {
-                var results = await _connect.Query("my coll").Select(new
+                await _connect.Query("my coll").Select(new
                 {
                     Test = Aggregations.Sum("Url Encoding")
                 }).Execute();
@@ -65,6 +65,7 @@ namespace ConnectSdk.Tests
 
                 _testHandler = new CaptureHttpHandler(responseText);
                 _connect = TestConfigurator.GetTestableClient(_testHandler);
+                _collection = "Test";
             }
 
             [Fact]
@@ -189,6 +190,7 @@ namespace ConnectSdk.Tests
 
                 _testHandler = new CaptureHttpHandler(responseText);
                 _connect = TestConfigurator.GetTestableClient(_testHandler);
+                _collection = "Test";
             }
 
             [Fact]
@@ -317,6 +319,7 @@ namespace ConnectSdk.Tests
                 var responseText = @"{""errorMessage"": ""Hello World""}";
                 _testHandler = new CaptureHttpHandler(responseText);
                 _connect = TestConfigurator.GetTestableClient(_testHandler);
+                _collection = "Test";
             }
 
             [Fact]
@@ -339,6 +342,7 @@ namespace ConnectSdk.Tests
                 var responseText = @"{""errors"":[{""field"":""Hello"",""description"":""World""}]}";
                 _testHandler = new CaptureHttpHandler(responseText);
                 _connect = TestConfigurator.GetTestableClient(_testHandler);
+                _collection = "Test";
             }
 
             [Fact]
@@ -361,6 +365,7 @@ namespace ConnectSdk.Tests
                 var responseText = @"{""errors"":[{""field"":""Hello"",""description"":""World""}]}";
                 _testHandler = new CaptureHttpHandler(responseText);
                 _connect = TestConfigurator.GetTestableClient(_testHandler);
+                _collection = "Test";
             }
 
             [Fact]
