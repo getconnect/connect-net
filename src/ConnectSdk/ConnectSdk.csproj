@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connect.cs" />
+    <Compile Include="ConnectInitializationException.cs" />
     <Compile Include="EventBatchPushResponse.cs" />
     <Compile Include="Api\StatusMapper.cs" />
     <Compile Include="EventPushResponse.cs" />

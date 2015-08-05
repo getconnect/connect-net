@@ -6,6 +6,12 @@ namespace ConnectSdk.Config
     {
         public BasicConfiguration(string apiKey, string projectId, string baseUrl = null, JsonSerializer eventSerializer = null)
         {
+            if (string.IsNullOrWhiteSpace(apiKey) || string.IsNullOrWhiteSpace(projectId))
+            {
+                throw new ConnectInitializationException("Both an apiKey and a projectId must be supplied to the configuration to authorize with the Connect API. " +
+                                                         "These can be retrieved from https://api.getconnect.io");
+            }
+
             BaseUrl = baseUrl ?? "https://api.getconnect.io";
             ApiKey = apiKey;
             ProjectId = projectId;
