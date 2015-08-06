@@ -4,11 +4,11 @@
 
 ## Getting Access
 
-[Get Connect](https://getconnect.io) to sign up and gain access to API keys to start using the SDK.
+[Get Connect](https://app.getconnect.io) to sign up and gain access to API keys to start using the SDK.
 
 ## Installation
 
-The SDK is available through [nuget](nuget.org). To install simply run
+The SDK is available through [nuget](http://www.nuget.org/packages/ConnectSdk/). To install simply run
 
 ```
 Install-Package ConnectSdk
