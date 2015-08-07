@@ -3,15 +3,15 @@
     <metadata>
         <id>ConnectSdk</id>
         <version>0.1.1</version>
-        <authors>Tipi Connect</authors>
-        <owners>Tipi Connect</owners>
+        <authors>Team Connect</authors>
+        <owners>Team Connect</owners>
         <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
         <projectUrl>https://getconnect.io/</projectUrl>
         <iconUrl>https://getconnect.io/styles/images/connect-logo-home.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <title>Connect .Net SDK</title>
-        <description>The .net SDK to push events to Connect.</description>
-        <tags>getconnect.io tipi connect api sdk</tags>
+        <title>Connect SDK</title>
+        <description>An SDK to push events and run queries for Connect (https://getconnect.io).</description>
+        <tags>getconnect.io connect api sdk event analytics</tags>
         <dependencies>
             <group targetFramework="portable-net45+win+wpa81+wp80">
                 <dependency id="Microsoft.Bcl" version="1.1.10"/>
