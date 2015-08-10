@@ -24,9 +24,14 @@ namespace ConnectSdk.Security
         public static string GenerateFilteredKey<TResult>(this IQuery<TResult> query, string masterKey, KeySettings setting)
         {
             var queryJson = query.ToString();
-            var keyJObject = JObject.Parse(queryJson);
-            keyJObject["canPush"] = setting.CanPush;
-            keyJObject["canQuery"] = setting.CanQuery;
+            var queryJObject = JObject.Parse(queryJson);
+
+            var keyJObject = new JObject
+            {
+                ["filters"] = queryJObject["filter"],
+                ["canPush"] = setting.CanPush,
+                ["canQuery"] = setting.CanQuery
+            };
             return GenerateFilteredKey(keyJObject.ToString(Formatting.None), masterKey);
         }
 

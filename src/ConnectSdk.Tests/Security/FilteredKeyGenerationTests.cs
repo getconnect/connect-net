@@ -13,13 +13,27 @@ namespace ConnectSdk.Tests.Security
         public class WhenFilteredKeyIsGenerated
         {
             [Fact]
-            public void It_should_encrypt_query_that_is_decryptable()
+            public void It_should_encrypt_filter_query()
             {
                 Connect.Initialize(new BasicConfiguration("key", "proj"));
 
                 var queryToEncrypt = Connect.Query("Moo")
                     .Where("Prop", "MyProp");
-                var keyJson = "{\"filter\":{\"Prop\":{\"eq\":\"MyProp\"}},\"canPush\":false,\"canQuery\":true}";
+                var keyJson = "{\"filters\":{\"Prop\":{\"eq\":\"MyProp\"}},\"canPush\":false,\"canQuery\":true}";
+                var masterKey = "2fMSlDSOGtMWH50wffnCscgGMcJGMQ0s";
+                var filteredKey = queryToEncrypt.GenerateFilteredKey(masterKey, new KeySettings(false, true));
+                var decryptedQueryJson = Decrypter.Decrypt(masterKey, filteredKey);
+
+                Assert.Equal(keyJson, decryptedQueryJson);
+            }
+
+            [Fact]
+            public void It_should_encrypt_query()
+            {
+                Connect.Initialize(new BasicConfiguration("key", "proj"));
+
+                var queryToEncrypt = Connect.Query("Moo");
+                var keyJson = "{\"filters\":null,\"canPush\":false,\"canQuery\":true}";
                 var masterKey = "2fMSlDSOGtMWH50wffnCscgGMcJGMQ0s";
                 var filteredKey = queryToEncrypt.GenerateFilteredKey(masterKey, new KeySettings(false, true));
                 var decryptedQueryJson = Decrypter.Decrypt(masterKey, filteredKey);
