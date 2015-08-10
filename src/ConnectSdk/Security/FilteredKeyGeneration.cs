@@ -1,16 +1,18 @@
 ﻿using System;
 using ConnectSdk.Querying;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PCLCrypto;
 
 namespace ConnectSdk.Security
 {
     public static class FilteredKeyGeneration
     {
-        public static string GenerateFilteredKey(string query, string masterKey)
+        public static string GenerateFilteredKey(string keyJson, string masterKey)
         {
             var aesProvider = WinRTCrypto.SymmetricKeyAlgorithmProvider.OpenAlgorithm(SymmetricAlgorithm.AesCbcPkcs7);
             var masterKeyBytes = masterKey.AsBytes();
-            var queryJsonBytes = query.AsBytes();
+            var queryJsonBytes = keyJson.AsBytes();
 
             var masterSymmetricKey = aesProvider.CreateSymmetricKey(masterKeyBytes);
             var iv = WinRTCrypto.CryptographicBuffer.GenerateRandom(16);
@@ -19,9 +21,13 @@ namespace ConnectSdk.Security
             return $"{iv.AsHex()}-{encryptedQueryJson.AsHex()}";
         }
 
-        public static string GenerateFilteredKey<TResult>(this IQuery<TResult> query, string masterKey)
+        public static string GenerateFilteredKey<TResult>(this IQuery<TResult> query, string masterKey, KeySettings setting)
         {
-            return GenerateFilteredKey(query.ToString(), masterKey);
+            var queryJson = query.ToString();
+            var keyJObject = JObject.Parse(queryJson);
+            keyJObject["canPush"] = setting.CanPush;
+            keyJObject["canQuery"] = setting.CanQuery;
+            return GenerateFilteredKey(keyJObject.ToString(Formatting.None), masterKey);
         }
 
         private static byte[] AsBytes(this string @string)

@@ -18,17 +18,13 @@ namespace ConnectSdk.Tests.Security
                 Connect.Initialize(new BasicConfiguration("key", "proj"));
 
                 var queryToEncrypt = Connect.Query("Moo")
-                    .Select(new
-                    {
-                        Prop = Aggregations.Sum("MyProp")
-                    });
-
-                var queryJson = queryToEncrypt.ToString();
+                    .Where("Prop", "MyProp");
+                var keyJson = "{\"filter\":{\"Prop\":{\"eq\":\"MyProp\"}},\"canPush\":false,\"canQuery\":true}";
                 var masterKey = "2fMSlDSOGtMWH50wffnCscgGMcJGMQ0s";
-                var filteredKey = queryToEncrypt.GenerateFilteredKey(masterKey);
+                var filteredKey = queryToEncrypt.GenerateFilteredKey(masterKey, new KeySettings(false, true));
                 var decryptedQueryJson = Decrypter.Decrypt(masterKey, filteredKey);
 
-                Assert.Equal(queryJson, decryptedQueryJson);
+                Assert.Equal(keyJson, decryptedQueryJson);
             }
         }
     }

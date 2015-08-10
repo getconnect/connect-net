@@ -100,6 +100,16 @@ namespace ConnectSdk.Querying
             return query.Where(newFitlers);
         }
 
+        public static IQuery<TResult> Where<TResult>(this IQuery<TResult> query, string propertyPath, string value)
+        {
+            var newFitlers = new Dictionary<string, Filter>
+            {
+                [propertyPath] = Eq(value)
+            };
+
+            return query.Where(newFitlers);
+        }
+
         public static IQuery<TResult> Where<TResult>(this IQuery<TResult> query, string propertyPath, object value)
         {
             var newFitlers = new Dictionary<string, Filter>
