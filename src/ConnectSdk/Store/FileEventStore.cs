@@ -84,12 +84,12 @@ namespace ConnectSdk.Store
         {
             var files = await collectionFolder.GetFilesAsync();
             var fileContents = await TaskEx.WhenAll(files.Select(file => file.ReadAllTextAsync()));
-            return fileContents.Select(fc => new Event(fc));
+            return fileContents.Select(fc => new Event(fc)).ToArray();
         }
 
         private string GenerateEventFileName(Event @event)
         {
-            return string.Format("{0}.json", @event.Id);
+            return $"{@event.Id}.json";
         }
     }
 }
