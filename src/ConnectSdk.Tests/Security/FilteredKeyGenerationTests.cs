@@ -15,9 +15,7 @@ namespace ConnectSdk.Tests.Security
             [Fact]
             public void It_should_encrypt_filter_query()
             {
-                Connect.Initialize(new BasicConfiguration("key", "proj"));
-
-                var queryToEncrypt = Connect.Query("Moo")
+                var queryToEncrypt = Connect.FilteredKeyQuery()
                     .Where("Prop", "MyProp");
                 var keyJson = "{\"filters\":{\"Prop\":{\"eq\":\"MyProp\"}},\"canPush\":false,\"canQuery\":true}";
                 var masterKey = "2fMSlDSOGtMWH50wffnCscgGMcJGMQ0s";
@@ -30,9 +28,7 @@ namespace ConnectSdk.Tests.Security
             [Fact]
             public void It_should_encrypt_query()
             {
-                Connect.Initialize(new BasicConfiguration("key", "proj"));
-
-                var queryToEncrypt = Connect.Query("Moo");
+                var queryToEncrypt = Connect.FilteredKeyQuery();
                 var keyJson = "{\"filters\":null,\"canPush\":false,\"canQuery\":true}";
                 var masterKey = "2fMSlDSOGtMWH50wffnCscgGMcJGMQ0s";
                 var filteredKey = queryToEncrypt.GenerateFilteredKey(masterKey, new KeySettings(false, true));

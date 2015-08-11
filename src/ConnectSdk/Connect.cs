@@ -59,6 +59,11 @@ namespace ConnectSdk
             return ConnectClient.PushPending();
         }
 
+        public static IQuery<IDictionary<string, object>> FilteredKeyQuery()
+        {
+            return new Query<IDictionary<string, object>>(null, null);
+        }
+
         public static IQuery<TResult> Query<TResult>(string collectionName)
         {
             return ConnectClient.Query<TResult>(collectionName);
