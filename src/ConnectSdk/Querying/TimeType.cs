@@ -6,6 +6,8 @@ namespace ConnectSdk.Querying
         Hours,
         Days,
         Weeks,
+        Months,
+        Quarters,
         Years,
     }
 }
