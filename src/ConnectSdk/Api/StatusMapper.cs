@@ -11,27 +11,27 @@ namespace ConnectSdk.Api
             {
                 return EventPushResponseStatus.Successful;
             }
-            else if (statusCode == HttpStatusCode.Conflict)
+            if (statusCode == HttpStatusCode.Conflict)
             {
                 return EventPushResponseStatus.Duplicate;
             }
-            else if (statusCode == (HttpStatusCode)422)
+            if (statusCode == (HttpStatusCode)422)
             {
                 return EventPushResponseStatus.EventFormatError;
             }
-            else if (statusCode == HttpStatusCode.Unauthorized)
+            if (statusCode == HttpStatusCode.Unauthorized)
             {
                 return EventPushResponseStatus.Unauthorized;
             }
-            else if (statusCode == HttpStatusCode.NotAcceptable)
+            if (statusCode == HttpStatusCode.NotAcceptable)
             {
                 return EventPushResponseStatus.EventFormatError;
             }
-            else if (statusCode == HttpStatusCode.BadGateway || statusCode == HttpStatusCode.GatewayTimeout)
+            if (statusCode == HttpStatusCode.BadGateway || statusCode == HttpStatusCode.GatewayTimeout)
             {
                 return EventPushResponseStatus.NetworkError;
             }
-                
+
             return EventPushResponseStatus.GeneralError;
         }
 
@@ -41,23 +41,27 @@ namespace ConnectSdk.Api
             {
                 return QueryResponseStatus.Successful;
             }
-            else if (statusCode == (HttpStatusCode)422)
+            if (statusCode == (HttpStatusCode)422)
             {
                 return QueryResponseStatus.QueryFormatError;
             }
-            else if (statusCode == HttpStatusCode.Unauthorized)
+            if (statusCode == HttpStatusCode.Unauthorized)
             {
                 return QueryResponseStatus.Unauthorized;
             }
-            else if (statusCode == HttpStatusCode.NotAcceptable)
+            if (statusCode == HttpStatusCode.RequestEntityTooLarge)
+            {
+                return QueryResponseStatus.TooManyResults;
+            }
+            if (statusCode == HttpStatusCode.NotAcceptable)
             {
                 return QueryResponseStatus.QueryFormatError;
             }
-            else if (statusCode == HttpStatusCode.BadGateway || statusCode == HttpStatusCode.GatewayTimeout)
+            if (statusCode == HttpStatusCode.BadGateway || statusCode == HttpStatusCode.GatewayTimeout)
             {
                 return QueryResponseStatus.NetworkError;
             }
-                
+
             return QueryResponseStatus.GeneralError;
         }
     }

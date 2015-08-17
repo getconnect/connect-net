@@ -3,7 +3,7 @@ namespace ConnectSdk.Querying
     public enum QueryResponseStatus
     {
         Successful,
-        Duplicate,
+        TooManyResults,
         Unauthorized,
         QueryFormatError,
         NetworkError,
