@@ -19,6 +19,8 @@ namespace ConnectSdk
 
         IQuery<TResult> Query<TResult>(string collectionName);
 
+        IQuery<TResult> Query<TResult>(string collectionName, Dictionary<string, Aggregation> aggregations);
+
         IQuery<IDictionary<string, object>> Query(string collectionName);
     }
 }

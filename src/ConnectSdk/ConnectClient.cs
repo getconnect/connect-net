@@ -65,9 +65,14 @@ namespace ConnectSdk
             return results;
         }
 
+        public virtual IQuery<TResult> Query<TResult>(string collectionName, Dictionary<string, Aggregation> aggregations)
+        {
+            return new Query<TResult>(collectionName, HttpEventEndpoint, aggregations);
+        }
+
         public virtual IQuery<TResult> Query<TResult>(string collectionName)
         {
-            return new Query<TResult>(collectionName, HttpEventEndpoint, new Dictionary<string, Aggregation>());
+            return new Query<TResult>(collectionName, HttpEventEndpoint);
         }
 
         public virtual IQuery<IDictionary<string, object>> Query(string collectionName)
