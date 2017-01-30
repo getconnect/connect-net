@@ -40,6 +40,26 @@ namespace ConnectSdk.Tests
             }
 
             [Fact]
+            public async Task It_should_get_using_collection_and_query_and_select()
+            {
+                await _connect.Query<IDictionary<string, Aggregation>>(_collection, new Dictionary<string, Aggregation>()).Execute();
+                var uri = _testHandler.Uri;
+                var select = "{\"select\":{}}";
+
+                Assert.Equal($"https://api.getconnect.io/events/{_collection}?query={select}", uri.ToString());
+            }
+
+            [Fact]
+            public async Task It_should_get_using_collection_and_query_and_aggregation()
+            {
+                await _connect.Query<IDictionary<string, Aggregation>>(_collection, new Dictionary<string, Aggregation> { { "Test", Aggregations.Sum("Url Encoding") } }).Execute();
+                var uri = _testHandler.Uri;
+                var select = "{\"select\":{\"Test\":{\"sum\":\"Url+Encoding\"}}}";
+
+                Assert.Equal($"https://api.getconnect.io/events/{_collection}?query={select}", uri.ToString());
+            }
+
+            [Fact]
             public async Task It_should_url_encode_collection_and_query()
             {
                 await _connect.Query("my coll").Select(new
