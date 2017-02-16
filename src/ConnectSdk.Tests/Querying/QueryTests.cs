@@ -651,5 +651,74 @@ namespace ConnectSdk.Tests.Querying
                 Assert.Equal("{\"groupBy\":[\"G1\",\"G2\",\"G3\"]}", query);
             }
         }
+
+        public class WhenAddingCustom
+        {
+            [Fact]
+            public void It_should_add_single_custom_value()
+            {
+                var query = baseQuery
+                    .Custom(new Dictionary<string, object>
+                    {
+                        {"nonEmpty", false}
+                    })
+                    .ToString();
+
+                Assert.Equal("{\"nonEmpty\":false}", query);
+            }
+
+            [Fact]
+            public void It_should_add_multiple_custom_values()
+            {
+                var query = baseQuery
+                    .Custom(new Dictionary<string, object>
+                    {
+                        {"custom1", false},
+                        {"custom2", true}
+                    })
+                    .ToString();
+
+                Assert.Equal("{\"custom1\":false,\"custom2\":true}", query);
+            }
+
+            [Fact]
+            public void It_should_filter_out_duplicates()
+            {
+                var query = baseQuery
+                    .Custom(new []
+                    {
+                        new KeyValuePair<string, object>("nonEmpty", false),
+                        new KeyValuePair<string, object>("nonEmpty", false)
+                    })
+                    .ToString();
+
+                Assert.Equal("{\"nonEmpty\":false}", query);
+            }
+
+            [Fact]
+            public void It_should_override_existing_values()
+            {
+                var init = baseQuery
+                    .Custom(new Dictionary<string, object>
+                    {
+                        {"nonEmpty", false}
+                    });
+
+                var query = init
+                    .Custom(new Dictionary<string, object>
+                    {
+                        {"nonEmpty", true}
+                    })
+                    .ToString();
+
+                Assert.Equal("{\"nonEmpty\":true}", query);
+            }
+
+            [Fact]
+            public void It_should_fail_to_add_reserved_value()
+            {
+                Assert.Throws<ArgumentException>(() => baseQuery.Custom(new [] {new KeyValuePair<string, object>("groupBy", "G1") }));
+            }
+        }
     }
 }
