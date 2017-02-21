@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace ConnectSdk.Querying
 {
@@ -15,9 +17,11 @@ namespace ConnectSdk.Querying
                 newCustomValues.Add(pair.Key, pair.Value);
             }
 
+            var properties = typeof(IQuery<TResult>).GetRuntimeProperties().ToList();
+
             foreach (var pair in customValues)
             {
-                if (ReservedQueryKeys.IsReservedKey(pair.Key))
+                if (properties.Any(p => string.Equals(p.Name, pair.Key, StringComparison.CurrentCultureIgnoreCase)))
                 {
                     throw new ArgumentException($"{pair.Key} is a reserved key and cannot be used for a custom property.");
                 }

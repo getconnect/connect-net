@@ -12,8 +12,8 @@ namespace ConnectSdk.Querying
         string[] GroupBy { get; }
         object Timezone { get; }
         Interval? Interval { get; }
-        IEnumerable<KeyValuePair<string, object>> Custom { get; }
-        Query<TNewResultType> UpdateWith<TNewResultType>(IDictionary<string, Aggregation> aggregations = null, IDictionary<string, IEnumerable<Filter>> filters = null, ITimeframe timeframe = null, string[] groups = null, Interval? interval = null, object timezone = null, IEnumerable<KeyValuePair<string, object>> custom = null);
+        IDictionary<string, object> Custom { get; }
+        Query<TNewResultType> UpdateWith<TNewResultType>(IDictionary<string, Aggregation> aggregations = null, IDictionary<string, IEnumerable<Filter>> filters = null, ITimeframe timeframe = null, string[] groups = null, Interval? interval = null, object timezone = null, IDictionary<string, object> custom = null);
         Task<QueryResponse<TResult>> Execute();
     }
 }

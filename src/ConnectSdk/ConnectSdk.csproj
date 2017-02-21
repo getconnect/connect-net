@@ -85,7 +85,6 @@
     <Compile Include="Querying\RelativeTimefame.cs" />
     <Compile Include="Querying\Converters\RelativeTimeframeConverter.cs" />
     <Compile Include="Querying\Converters\PeriodRelativeTimefameConverter.cs" />
-    <Compile Include="Querying\ReservedQueryKeys.cs" />
     <Compile Include="Querying\SelectsExtensions.cs" />
     <Compile Include="Querying\TimeType.cs" />
     <Compile Include="Querying\Timeframes.cs" />
