@@ -46,6 +46,7 @@
     <Compile Include="EventPushResponse.cs" />
     <Compile Include="Querying\AggregationOperation.cs" />
     <Compile Include="Querying\Converters\FiltersConverter.cs" />
+    <Compile Include="Querying\CustomValues.cs" />
     <Compile Include="Querying\FieldError.cs" />
     <Compile Include="Querying\FilterOperation.cs" />
     <Compile Include="Querying\IntervalPeriodResult.cs" />

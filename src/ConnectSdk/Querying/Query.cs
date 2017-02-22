@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ConnectSdk.Api;
 using ConnectSdk.Querying.Converters;
@@ -13,12 +16,16 @@ namespace ConnectSdk.Querying
 
     public class Query<TResult> : IQuery<TResult>
     {
+        private readonly Dictionary<string, object> _data;
         public virtual AliasedAggregations Select { get; }
         public virtual FilteredProperties Filter { get; }
         public virtual ITimeframe Timeframe { get; }
         public virtual string[] GroupBy { get; }
         public virtual object Timezone { get; }
         public virtual Interval? Interval { get; }
+        [JsonExtensionData]
+        // Setter is required by JsonExtensionData otherwise a null exception will be thrown on serialization
+        public virtual IDictionary<string, object> Custom { get; private set; }
         protected IEventEndpoint Endpoint;
         protected string Collection;
 
@@ -40,7 +47,7 @@ namespace ConnectSdk.Querying
             Serializer.Converters.Add(new RelativeTimeframeConverter());
         }
 
-        public Query(string collection, IEventEndpoint endpoint, AliasedAggregations aggregations = null, FilteredProperties filters = null, ITimeframe timeframe = null, string[] groups = null, Interval? interval = null, object timezone = null)
+        public Query(string collection, IEventEndpoint endpoint, AliasedAggregations aggregations = null, FilteredProperties filters = null, ITimeframe timeframe = null, string[] groups = null, Interval? interval = null, object timezone = null, IDictionary<string, object> custom = null)
         {
             Collection = collection;
             Endpoint = endpoint;
@@ -50,18 +57,19 @@ namespace ConnectSdk.Querying
             GroupBy = groups;
             Interval = interval;
             Timezone = timezone;
+            Custom = custom;
         }
-
-        public virtual Query<TNewResultType> UpdateWith<TNewResultType>(AliasedAggregations aggregations = null, FilteredProperties filters = null, ITimeframe timeframe = null, string[] groups = null, Interval? interval = null, object timezone = null)
+        
+        public virtual Query<TNewResultType> UpdateWith<TNewResultType>(AliasedAggregations aggregations = null, FilteredProperties filters = null, ITimeframe timeframe = null, string[] groups = null, Interval? interval = null, object timezone = null, IDictionary<string, object> custom = null)
         {
-            return new  Query<TNewResultType>(Collection, Endpoint, aggregations ?? this.Select, filters ?? this.Filter, timeframe ?? this.Timeframe, groups ?? this.GroupBy, interval ?? this.Interval, timezone ?? this.Timezone);
+            return new Query<TNewResultType>(Collection, Endpoint, aggregations ?? this.Select, filters ?? this.Filter, timeframe ?? this.Timeframe, groups ?? this.GroupBy, interval ?? this.Interval, timezone ?? this.Timezone, custom ?? this.Custom);
         }
 
         public virtual async Task<QueryResponse<TResult>> Execute()
         {
              return await Endpoint.Query(Collection, this);
         }
-        
+
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this, Formatting.None, Serializer);
